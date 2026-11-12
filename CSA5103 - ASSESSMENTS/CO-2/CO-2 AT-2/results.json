@@ -1,0 +1,64 @@
+{
+ "blocks": [
+  "PAY ACC1001 5000",
+  "PAY ACC1001 5000",
+  "PAY ACC2002 9000",
+  "PAY ACC1001 5000"
+ ],
+ "ecb": [
+  "4c1d1307b03c783ea7dba80a3f9bd9c0",
+  "4c1d1307b03c783ea7dba80a3f9bd9c0",
+  "cac7222cd4ab799163e1d5adfd4285c8",
+  "4c1d1307b03c783ea7dba80a3f9bd9c0"
+ ],
+ "cbc": [
+  "863c61d34fd5193751b9b81cc0d47c36",
+  "9c763f301d69f06e51da4452a4475048",
+  "b77e0bf24846d6e785aa276bcd7558b8",
+  "a0717222b8c26df14f2ef5be05bcee2c"
+ ],
+ "ctr": [
+  "0e5988deb75e4b4ff0930ff70197a1bf",
+  "4a83e6fcd6b63aa061d1899300dc1aeb",
+  "f4053e6b3b8ef6cc3932fd5e57f1c055",
+  "4a598b12d212afa4fe561da43a414e3a"
+ ],
+ "gcm_ct": [
+  "bd92124ad6a3ed37c95a37a731fc7c61",
+  "d3f3dd6e3bdabb4bdb0e9a006e712898",
+  "0883412664d3ca1ff6fe9bc550f23cbb",
+  "22062e4270a18b862046a258a51a072f"
+ ],
+ "gcm_tag": "f65e5a318e81eacdc85aec82a98e7301",
+ "ecb_swapped_plain": [
+  "PAY ACC2002 9000",
+  "PAY ACC1001 5000",
+  "PAY ACC1001 5000",
+  "PAY ACC1001 5000"
+ ],
+ "gcm_tamper": "REJECTED (InvalidTag)",
+ "ecb_dup": 2,
+ "cbc_dup": 0,
+ "bench": {
+  "RSA-2048 key generation": 109.81708000181243,
+  "ECC P-256 key generation": 0.042530500068096444,
+  "RSA-2048 sign (private key)": 1.4503650000551715,
+  "ECDSA P-256 sign (private key)": 0.07726050011115149,
+  "RSA-2048 verify": 0.06633999990299344,
+  "ECDSA P-256 verify": 0.16705249989172444
+ },
+ "sizes": {
+  "rsa_pub": 294,
+  "ecc_pub": 91,
+  "rsa_sig": 256,
+  "ecdsa_sig": 71,
+  "x25519_pub": 32
+ },
+ "session": {
+  "shared_equal": true,
+  "key_hex": "9520dc1c74c56897f96a0f1133cc319c",
+  "ct_len": 45,
+  "pt_len": 29,
+  "roundtrip": "temperature=24.5C;door=locked"
+ }
+}

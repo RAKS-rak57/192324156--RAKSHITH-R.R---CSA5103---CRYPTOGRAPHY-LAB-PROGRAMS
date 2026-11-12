@@ -1,0 +1,179 @@
+{
+ "rows": [
+  {
+   "step": "start (all 9 bugs present)",
+   "tests": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "passed": 0,
+   "fips_out": "fb91effedc7b4531",
+   "bit_errors": 38
+  },
+  {
+   "step": "fix B1 (random key)",
+   "tests": [
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "passed": 1,
+   "fips_out": "fb91effedc7b4531",
+   "bit_errors": 38
+  },
+  {
+   "step": "fix B2 (shared list)",
+   "tests": [
+    true,
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "passed": 2,
+   "fips_out": "fb91effedc7b4531",
+   "bit_errors": 38
+  },
+  {
+   "step": "fix B3 (permute index)",
+   "tests": [
+    true,
+    true,
+    true,
+    true,
+    false,
+    false,
+    false,
+    false
+   ],
+   "passed": 4,
+   "fips_out": "1fc3aa0397433a5a",
+   "bit_errors": 34
+  },
+  {
+   "step": "fix B4 (shift table)",
+   "tests": [
+    true,
+    true,
+    true,
+    true,
+    false,
+    false,
+    false,
+    false
+   ],
+   "passed": 4,
+   "fips_out": "b47ce718aa281bbc",
+   "bit_errors": 31
+  },
+  {
+   "step": "fix B5 (S-box row/col)",
+   "tests": [
+    true,
+    true,
+    true,
+    true,
+    false,
+    false,
+    false,
+    false
+   ],
+   "passed": 4,
+   "fips_out": "4ad423a80f05780a",
+   "bit_errors": 30
+  },
+  {
+   "step": "fix B6 (final swap)",
+   "tests": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    false,
+    false,
+    false
+   ],
+   "passed": 5,
+   "fips_out": "85e813540f0ab405",
+   "bit_errors": 0
+  },
+  {
+   "step": "fix B7 (decrypt key order)",
+   "tests": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    false,
+    false
+   ],
+   "passed": 6,
+   "fips_out": "85e813540f0ab405",
+   "bit_errors": 0
+  },
+  {
+   "step": "fix B8 (EDE order)",
+   "tests": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    false
+   ],
+   "passed": 7,
+   "fips_out": "85e813540f0ab405",
+   "bit_errors": 0
+  },
+  {
+   "step": "fix B9 (PKCS#7)",
+   "tests": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
+   ],
+   "passed": 8,
+   "fips_out": "85e813540f0ab405",
+   "bit_errors": 0
+  }
+ ],
+ "tests": [
+  "T1 same input -> same ciphertext",
+  "T2 key A and key B differ",
+  "T3 FP(IP(x)) = x",
+  "T4 round key K1 = 1B02EFFC7072",
+  "T5 FIPS vector = 85E813540F0AB405",
+  "T6 decrypt(encrypt(x)) = x",
+  "T7 3DES = OpenSSL 3DES",
+  "T8 padding round-trip"
+ ],
+ "b1_runs": [
+  "c9852538343a93dbd9061f7ed322c57347ab4557c6345db4",
+  "c96a8bbf535129d534321fa7a6670f48a6bad5d60f961b7d",
+  "33b7b5fccb456ff7c6f8bce0dc647dc21a15975d6eb0f459"
+ ]
+}

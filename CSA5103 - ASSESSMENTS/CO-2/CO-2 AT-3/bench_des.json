@@ -1,0 +1,57 @@
+{
+ "isolated": {
+  "B2": {
+   "round_keys_wrong": 0,
+   "bits_wrong": 0
+  },
+  "B3": {
+   "round_keys_wrong": 16,
+   "bits_wrong": 28
+  },
+  "B4": {
+   "round_keys_wrong": 14,
+   "bits_wrong": 35
+  },
+  "B5": {
+   "round_keys_wrong": 0,
+   "bits_wrong": 33
+  },
+  "B6": {
+   "round_keys_wrong": 0,
+   "bits_wrong": 30
+  }
+ },
+ "v2_des_10mb_s": 5.21725129999686,
+ "v2_3des_10mb_s": 15.149188700015657,
+ "throughput_MBps": {
+  "v0 DES (bit lists, key schedule per block)": 0.00978317908049952,
+  "v0 3DES (bit lists)": 0.0037228910983125134,
+  "v1 DES (integers + SP tables)": 0.14192029052459745,
+  "v2 DES (NumPy, block-parallel)": 1.9167181002007738,
+  "v2 3DES (NumPy, block-parallel)": 0.6601013557900738,
+  "v2 3DES-CTR (NumPy)": 0.7372965228401016,
+  "OpenSSL 3DES-ECB": 13.49035567725805,
+  "OpenSSL AES-128-CBC": 418.73767335244054,
+  "OpenSSL AES-128-GCM": 1128.1970282269394,
+  "OpenSSL AES-256-GCM": 1073.0880250003681
+ },
+ "extrapolated_10MB_s": {
+  "v0 DES (bit lists, key schedule per block)": 1022.162624001503,
+  "v0 3DES (bit lists)": 2686.084480024874,
+  "v1 DES (integers + SP tables)": 70.46208800049499,
+  "v2 DES (NumPy, block-parallel)": 5.21725129999686,
+  "v2 3DES (NumPy, block-parallel)": 15.149188700015657,
+  "v2 3DES-CTR (NumPy)": 13.563064100017073,
+  "OpenSSL 3DES-ECB": 0.741270300000906,
+  "OpenSSL AES-128-CBC": 0.023881300003267825,
+  "OpenSSL AES-128-GCM": 0.008863700000802055,
+  "OpenSSL AES-256-GCM": 0.009318900003563613
+ },
+ "checks": {
+  "v1 DES == OpenSSL": true,
+  "v2 DES == OpenSSL": true,
+  "v2 3DES == OpenSSL": true,
+  "v2 3DES decrypt round-trip": true,
+  "v0 3DES == v2 3DES": true
+ }
+}

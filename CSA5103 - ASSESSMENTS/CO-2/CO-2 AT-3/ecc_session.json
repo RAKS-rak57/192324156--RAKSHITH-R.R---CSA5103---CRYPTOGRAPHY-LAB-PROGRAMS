@@ -1,0 +1,140 @@
+{
+ "rows": [
+  {
+   "step": "start (7 bugs)",
+   "tests": [
+    false,
+    false,
+    false,
+    true,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "passed": 1
+  },
+  {
+   "step": "fix E1 identity",
+   "tests": [
+    true,
+    false,
+    false,
+    true,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "passed": 2
+  },
+  {
+   "step": "fix E4 P+(-P)",
+   "tests": [
+    true,
+    true,
+    false,
+    true,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "passed": 3
+  },
+  {
+   "step": "fix E3 doubling case",
+   "tests": [
+    true,
+    true,
+    false,
+    true,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "passed": 3
+  },
+  {
+   "step": "fix E5 modular division",
+   "tests": [
+    true,
+    true,
+    false,
+    true,
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "passed": 3
+  },
+  {
+   "step": "fix E6 scalar mult",
+   "tests": [
+    true,
+    true,
+    false,
+    true,
+    false,
+    true,
+    false,
+    false,
+    false
+   ],
+   "passed": 4
+  },
+  {
+   "step": "fix E2 curve parameter a",
+   "tests": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    false
+   ],
+   "passed": 8
+  },
+  {
+   "step": "fix E7 point validation",
+   "tests": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
+   ],
+   "passed": 9
+  }
+ ],
+ "tests": [
+  "U1 P + O = P",
+  "U2 P + (-P) = O",
+  "U3 2G = (6,3) on toy curve",
+  "U4 2G + G = 3G",
+  "U5 kG table k=1..19 (toy)",
+  "U6 secp256k1 (a=0) = OpenSSL",
+  "U7 P-256 (a=-3) = OpenSSL",
+  "U8 ECDH P-256 = OpenSSL",
+  "U9 invalid point rejected"
+ ],
+ "only_e2": {
+  "secp256k1 (a = 0)": true,
+  "P-256 (a = -3)": false,
+  "toy curve (a = 2)": false
+ }
+}

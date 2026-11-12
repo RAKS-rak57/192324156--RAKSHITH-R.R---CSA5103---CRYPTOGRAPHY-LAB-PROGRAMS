@@ -1,0 +1,19 @@
+== 2G by hand-formula =====================================
+correct : lambda = (3*5^2+2)/(2*1) = 77/2 = 13 (mod 17) -> 2G = (6,3); on curve: True
+bug E2  : lambda = (3*5^2)/2 = 75/2 = 12 (mod 17) -> (15,15); on curve: False
+bug E5  : lambda = 77 // 2 = 38 -> reduced mod 17 = 4 (correct value is 13)
+
+== double-and-add trace for 13G ===========================
+bit 0: 1  add   R = (5, 1)   Q(= 2^0 G) = (5, 1)
+bit 1: 0  skip  R = (5, 1)   Q(= 2^1 G) = (6, 3)
+bit 2: 1  add   R = (9, 16)   Q(= 2^2 G) = (3, 1)
+bit 3: 1  add   R = (16, 4)   Q(= 2^3 G) = (13, 7)
+13G = (16, 4) | table value (16, 4): True
+operations: naive repeated addition = 12 additions; double-and-add = 3 useful doublings + 3 additions
+
+== ECDH on the toy curve ==================================
+Alice a=3, A=aG=(10, 6);  Bob b=7, B=bG=(0, 6);  shared aB=(6, 3), bA=(6, 3), equal=True  (= 2G)
+
+== ECDH on P-256 against OpenSSL ==========================
+shared x-coordinate (hex, first 16): 9c49a2d8eb26b4be | both sides equal: True | equals OpenSSL: True
+invalid point rejected: yes -> peer public key is not a valid point on the curve

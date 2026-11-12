@@ -1,0 +1,14 @@
+start (all 9 bugs present)       passed 0/8  FIPS-out fb91effedc7b4531  wrong bits 38
+fix B1 (random key)              passed 1/8  FIPS-out fb91effedc7b4531  wrong bits 38
+fix B2 (shared list)             passed 2/8  FIPS-out fb91effedc7b4531  wrong bits 38
+fix B3 (permute index)           passed 4/8  FIPS-out 1fc3aa0397433a5a  wrong bits 34
+fix B4 (shift table)             passed 4/8  FIPS-out b47ce718aa281bbc  wrong bits 31
+fix B5 (S-box row/col)           passed 4/8  FIPS-out 4ad423a80f05780a  wrong bits 30
+fix B6 (final swap)              passed 5/8  FIPS-out 85e813540f0ab405  wrong bits 0
+fix B7 (decrypt key order)       passed 6/8  FIPS-out 85e813540f0ab405  wrong bits 0
+fix B8 (EDE order)               passed 7/8  FIPS-out 85e813540f0ab405  wrong bits 0
+fix B9 (PKCS#7)                  passed 8/8  FIPS-out 85e813540f0ab405  wrong bits 0
+B1 runs:
+  1c81f90f337d735e1c9d38a62069582b809bb886f93c6b9a
+  aabb7de066ec952afd7c1a1de8addf809a8907a5ba2c6caf
+  fdd9e325a8110bafc0bb04349f11746820e982c856d47d2c

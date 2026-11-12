@@ -1,0 +1,9 @@
+start (7 bugs)             ...P.....  1/9
+fix E1 identity            P..P.....  2/9
+fix E4 P+(-P)              PP.P.....  3/9
+fix E3 doubling case       PP.P.....  3/9
+fix E5 modular division    PP.P.....  3/9
+fix E6 scalar mult         PP.P.P...  4/9
+fix E2 curve parameter a   PPPPPPPP.  8/9
+fix E7 point validation    PPPPPPPPP  9/9
+only E2 active: {'secp256k1 (a = 0)': True, 'P-256 (a = -3)': False, 'toy curve (a = 2)': False}
