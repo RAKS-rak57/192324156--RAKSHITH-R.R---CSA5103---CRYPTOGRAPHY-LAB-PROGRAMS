@@ -1,0 +1,219 @@
+{
+ "s41": {
+  "status": {
+   "protocol": "TLSv1.3",
+   "cipher": "TLS_AES_256_GCM_SHA384",
+   "bits": 256,
+   "status": "HTTP/1.0 200 OK",
+   "headers": [
+    "Server: ClinicAPI ",
+    "Date: Tue, 17 Nov 2026 21:14:10 GMT",
+    "Content-Type: application/json",
+    "Content-Length: 16",
+    "Strict-Transport-Security: max-age=63072000; includeSubDomains",
+    "Content-Security-Policy: default-src 'none'; frame-ancestors 'none'",
+    "X-Content-Type-Options: nosniff",
+    "X-Frame-Options: DENY",
+    "Cache-Control: no-store",
+    "Referrer-Policy: no-referrer"
+   ],
+   "body": "{\"status\": \"ok\"}"
+  },
+  "records_mtls": {
+   "status": "HTTP/1.0 200 OK",
+   "body": "{\"patient\": 1001, \"note\": \"TEST DATA ONLY\"}",
+   "protocol": "TLSv1.3",
+   "cipher": "TLS_AES_256_GCM_SHA384"
+  },
+  "records_nocert": {
+   "status": "HTTP/1.0 401 Unauthorized",
+   "body": "{\"error\": \"client certificate required\"}"
+  },
+  "validation": [
+   "chain: leaf <- Hospital Issuing CA <- Hospital Root CA (trusted anchor); 2 signatures verified",
+   "validity(server): 2026-11-16 .. 2027-11-17 -> OK",
+   "validity(issuing CA): 2026-11-16 .. 2031-11-16 -> OK",
+   "validity(root CA): 2026-11-16 .. 2036-11-14 -> OK",
+   "hostname: 'hospital.test' in SAN ['hospital.test', 'api.hospital.test'] -> OK",
+   "extendedKeyUsage serverAuth -> OK",
+   "issuer basicConstraints CA=True, pathLen=0 -> OK"
+  ],
+  "server_log": [
+   "\"GET /status HTTP/1.1\" 200 -",
+   "ALLOW /records for CN=lab-client-1",
+   "\"GET /records/1001 HTTP/1.1\" 200 -",
+   "DENY /records: no client certificate",
+   "\"GET /records/1001 HTTP/1.1\" 401 -"
+  ],
+  "openssl_chain": [
+   " 0 s:O = Hospital Test PKI, CN = hospital.test",
+   "   i:O = Hospital Test PKI, CN = Hospital Issuing CA",
+   "   a:PKEY: rsaEncryption, 2048 (bit); sigalg: RSA-SHA256",
+   "   v:NotBefore: Nov 16 21:14:10 2026 GMT; NotAfter: Nov 17 21:14:10 2027 GMT",
+   " 1 s:O = Hospital Test PKI, CN = Hospital Issuing CA",
+   "   i:O = Hospital Test PKI, CN = Hospital Root CA",
+   "   a:PKEY: rsaEncryption, 2048 (bit); sigalg: RSA-SHA256",
+   "   v:NotBefore: Nov 16 21:14:10 2026 GMT; NotAfter: Nov 16 21:14:10 2031 GMT",
+   "Server Temp Key: X25519, 253 bits",
+   "Verification: OK",
+   "New, TLSv1.3, Cipher is TLS_AES_256_GCM_SHA384",
+   "Verify return code: 0 (ok)"
+  ]
+ },
+ "s42": {
+  "tls12": [
+   ">>> TLS 1.0, RecordHeader [length 0005]",
+   ">>> TLS 1.2, Handshake [length 00cd], ClientHello",
+   "<<< TLS 1.2, RecordHeader [length 0005]",
+   "<<< TLS 1.2, Handshake [length 0041], ServerHello",
+   "<<< TLS 1.2, RecordHeader [length 0005]",
+   "<<< TLS 1.2, Handshake [length 071a], Certificate",
+   "<<< TLS 1.2, RecordHeader [length 0005]",
+   "<<< TLS 1.2, Handshake [length 012c], ServerKeyExchange",
+   "<<< TLS 1.2, RecordHeader [length 0005]",
+   "<<< TLS 1.2, Handshake [length 0034], CertificateRequest",
+   "<<< TLS 1.2, RecordHeader [length 0005]",
+   "<<< TLS 1.2, Handshake [length 0004], ServerHelloDone",
+   ">>> TLS 1.2, RecordHeader [length 0005]",
+   ">>> TLS 1.2, Handshake [length 0007], Certificate",
+   ">>> TLS 1.2, RecordHeader [length 0005]",
+   ">>> TLS 1.2, Handshake [length 0025], ClientKeyExchange",
+   ">>> TLS 1.2, RecordHeader [length 0005]",
+   ">>> TLS 1.2, ChangeCipherSpec [length 0001]",
+   ">>> TLS 1.2, RecordHeader [length 0005]",
+   ">>> TLS 1.2, Handshake [length 0010], Finished",
+   "<<< TLS 1.2, RecordHeader [length 0005]",
+   "<<< TLS 1.2, Handshake [length 00ba], NewSessionTicket",
+   "<<< TLS 1.2, RecordHeader [length 0005]",
+   "<<< TLS 1.2, RecordHeader [length 0005]",
+   "<<< TLS 1.2, Handshake [length 0010], Finished",
+   ">>> TLS 1.2, RecordHeader [length 0005]",
+   ">>> TLS 1.2, Alert [length 0002], warning close_notify"
+  ],
+  "tls13": [
+   ">>> TLS 1.0, RecordHeader [length 0005]",
+   ">>> TLS 1.3, Handshake [length 00f2], ClientHello",
+   "<<< TLS 1.2, RecordHeader [length 0005]",
+   "<<< TLS 1.3, Handshake [length 007a], ServerHello",
+   "<<< TLS 1.2, RecordHeader [length 0005]",
+   "<<< TLS 1.2, RecordHeader [length 0005]",
+   "<<< TLS 1.3, InnerContent [length 0001]",
+   "<<< TLS 1.3, Handshake [length 0006], EncryptedExtensions",
+   "<<< TLS 1.2, RecordHeader [length 0005]",
+   "<<< TLS 1.3, InnerContent [length 0001]",
+   "<<< TLS 1.3, Handshake [length 002d], CertificateRequest",
+   "<<< TLS 1.2, RecordHeader [length 0005]",
+   "<<< TLS 1.3, InnerContent [length 0001]",
+   "<<< TLS 1.3, Handshake [length 071f], Certificate",
+   "<<< TLS 1.2, RecordHeader [length 0005]",
+   "<<< TLS 1.3, InnerContent [length 0001]",
+   "<<< TLS 1.3, Handshake [length 0108], CertificateVerify",
+   "<<< TLS 1.2, RecordHeader [length 0005]",
+   "<<< TLS 1.3, InnerContent [length 0001]",
+   "<<< TLS 1.3, Handshake [length 0034], Finished",
+   ">>> TLS 1.2, RecordHeader [length 0005]",
+   ">>> TLS 1.3, ChangeCipherSpec [length 0001]",
+   ">>> TLS 1.2, RecordHeader [length 0005]",
+   ">>> TLS 1.2, InnerContent [length 0001]",
+   ">>> TLS 1.3, Handshake [length 0008], Certificate",
+   ">>> TLS 1.2, RecordHeader [length 0005]",
+   ">>> TLS 1.2, InnerContent [length 0001]",
+   ">>> TLS 1.3, Handshake [length 0034], Finished",
+   "<<< TLS 1.2, RecordHeader [length 0005]",
+   "<<< TLS 1.3, InnerContent [length 0001]"
+  ],
+  "tls12_kx": [
+   "Server Temp Key: X25519, 253 bits",
+   "New, TLSv1.2, Cipher is ECDHE-RSA-AES256-GCM-SHA384",
+   "    Cipher    : ECDHE-RSA-AES256-GCM-SHA384"
+  ],
+  "tls13_kx": [
+   "Server Temp Key: X25519, 253 bits",
+   "New, TLSv1.3, Cipher is TLS_AES_256_GCM_SHA384",
+   "    Cipher    : TLS_AES_256_GCM_SHA384"
+  ]
+ },
+ "s43": [
+  {
+   "tag": "a",
+   "desc": "server certificate expired (port 18445)",
+   "predicted": "FAIL during certificate verification (after Certificate message, before Finished); no HTTP",
+   "handshake": "FAILED",
+   "status": "",
+   "error": "SSLCertVerificationError: CERTIFICATE_VERIFY_FAILED | [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1000)",
+   "protocol": ""
+  },
+  {
+   "tag": "b",
+   "desc": "connect using the IP address (server_hostname='127.0.0.1') to the valid server",
+   "predicted": "FAIL at the hostname check: certificate has DNS names only",
+   "handshake": "FAILED",
+   "status": "",
+   "error": "SSLCertVerificationError: CERTIFICATE_VERIFY_FAILED | [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: IP address mismatch, certificate is not valid for '127.0.0.1'. (_ssl.c:1000)",
+   "protocol": ""
+  },
+  {
+   "tag": "c",
+   "desc": "server restricted to TLS 1.0 (port 18446), client minimum TLS 1.2",
+   "predicted": "FAIL at version negotiation (no common protocol) - ServerHello never accepted",
+   "handshake": "FAILED",
+   "status": "",
+   "error": "SSLError: TLSV1_ALERT_PROTOCOL_VERSION | [SSL: TLSV1_ALERT_PROTOCOL_VERSION] tlsv1 alert protocol version (_ssl.c:1000)",
+   "protocol": ""
+  },
+  {
+   "tag": "d",
+   "desc": "no client certificate sent to the protected endpoint (optional-auth port 18443)",
+   "predicted": "TLS handshake SUCCEEDS; /records returns 401 from application logic; /status unaffected",
+   "handshake": "complete",
+   "status": "HTTP/1.0 401 Unauthorized",
+   "error": "",
+   "protocol": "TLSv1.3"
+  },
+  {
+   "tag": "d2",
+   "desc": "no client certificate sent to a CERT_REQUIRED listener (port 18444)",
+   "predicted": "FAIL: server aborts the handshake (certificate required alert)",
+   "handshake": "FAILED",
+   "status": "",
+   "error": "SSLEOFError:  | EOF occurred in violation of protocol (_ssl.c:2417)",
+   "protocol": "TLSv1.3"
+  }
+ ],
+ "s43_server_errors": {
+  "expired": [
+   "SSLError: [SSL: SSLV3_ALERT_CERTIFICATE_EXPIRED] sslv3 alert certificate expired (_ssl.c:1000)"
+  ],
+  "required": [
+   "SSLError: [SSL: PEER_DID_NOT_RETURN_A_CERTIFICATE] peer did not return a certificate (_ssl.c:1000)"
+  ],
+  "legacy": [
+   "SSLError: [SSL: UNSUPPORTED_PROTOCOL] unsupported protocol (_ssl.c:1000)"
+  ]
+ },
+ "s44": {
+  "weak_server": "min TLS 1.0, ciphers AES128-SHA (RSA key transport, CBC, SHA-1 MAC), ECDHE-RSA-AES128-SHA, AES128-GCM",
+  "legacy_client_vs_weak": {
+   "handshake": "complete",
+   "protocol": "TLSv1",
+   "cipher": "AES128-SHA",
+   "status": "HTTP/1.0 200 OK",
+   "error": ""
+  },
+  "legacy_client_vs_fixed": {
+   "handshake": "FAILED",
+   "error": "SSLError: TLSV1_ALERT_PROTOCOL_VERSION | [SSL: TLSV1_ALERT_PROTOCOL_VERSION] tlsv1 alert protocol version (_ssl.c:1000)"
+  },
+  "modern_client_vs_fixed": {
+   "handshake": "complete",
+   "protocol": "TLSv1.3",
+   "cipher": "TLS_AES_256_GCM_SHA384",
+   "status": "HTTP/1.0 200 OK"
+  },
+  "fixed_errors": [
+   "SSLError: [SSL: UNSUPPORTED_PROTOCOL] unsupported protocol (_ssl.c:1000)"
+  ]
+ },
+ "python": "3.12.3",
+ "openssl": "OpenSSL 3.0.13 30 Jan 2024"
+}

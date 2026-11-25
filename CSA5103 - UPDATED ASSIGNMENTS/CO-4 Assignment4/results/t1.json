@@ -1,0 +1,330 @@
+{
+ "normal_protect": {
+  "code": 0,
+  "out": "[1] digest SHA-256(M)            : c4358d74067c6008c14d6edc3d430758...  (9 B message)\n[2] signature RSA-PSS with KR(alice) : 256 B  (key used: alice PRIVATE)\n[3] compress(sig|M)              : 267 B -> 278 B\n[4] session key id (not the key)  : 65a94cef17a10d6e\n[5] wrap Ks for bob      RSA-OAEP with KU(bob) : 256 B, keyid faf72505a3bceb84\n[6] AES-256-GCM(Ks, compressed, aad=header) : 278 B -> 294 B (16 B tag)\nOK session-key-id=65a94cef17a10d6e recipients=1 skipped=[] pk_ops=2 sym_ops=1 sizes={'message': 9, 'payload': 267, 'compressed': 278, 'signature': 256, 'header': 289, 'ciphertext': 294, 'binary': 599, 'armored': 867}\n",
+  "err": ""
+ },
+ "normal_unprotect": {
+  "code": 0,
+  "out": "[1] radix-64 decoded: 599 B\n[2] parsed header: 1 recipient(s), session-key id 65a94cef17a10d6e, sender keyid 267e9b49cde21ec5\n[3] Ks recovered with KR(bob) (RSA-OAEP), id check OK\n[4] AES-GCM tag verified, decrypted 294 B -> 278 B\n[5] decompressed 278 B -> 267 B ; signature 256 B ; message 9 B\n[6] signature verified with KU(alice)  -> cryptographically VALID\n    web-of-trust: signature of carol on alice valid, owner-trust=full\n    web-of-trust: signature of dave on alice valid, owner-trust=marginal\n    web-of-trust: signature of eve on alice valid, owner-trust=marginal\n    web-of-trust: signature of frank on alice valid, owner-trust=untrusted\n[7] key validity of alice: VALID (full=1, marginal=2)\nOK signer=alice trust=TRUSTED message=b'MEET AT 9'\n",
+  "err": ""
+ },
+ "hexview": [
+  {
+   "label": "magic 'PGPX'",
+   "start": 0,
+   "end": 4,
+   "hex": "50 47 50 58",
+   "length": 4
+  },
+  {
+   "label": "version",
+   "start": 4,
+   "end": 5,
+   "hex": "01",
+   "length": 1
+  },
+  {
+   "label": "recipient count",
+   "start": 5,
+   "end": 7,
+   "hex": "00 01",
+   "length": 2
+  },
+  {
+   "label": "session-key id",
+   "start": 7,
+   "end": 15,
+   "hex": "65 a9 4c ef 17 a1 0d 6e",
+   "length": 8
+  },
+  {
+   "label": "sender keyid",
+   "start": 15,
+   "end": 23,
+   "hex": "26 7e 9b 49 cd e2 1e c5",
+   "length": 8
+  },
+  {
+   "label": "recipient keyid",
+   "start": 23,
+   "end": 31,
+   "hex": "fa f7 25 05 a3 bc eb 84",
+   "length": 8
+  },
+  {
+   "label": "wrapped-key length",
+   "start": 31,
+   "end": 33,
+   "hex": "01 00",
+   "length": 2
+  },
+  {
+   "label": "RSA-OAEP wrapped Ks (first 16 B shown)",
+   "start": 33,
+   "end": 49,
+   "hex": "55 19 d0 ee 14 7b 0b c2 41 09 c7 61 ee b6 70 f9",
+   "length": 16
+  },
+  {
+   "label": "... wrapped Ks continues ...",
+   "start": 49,
+   "end": 289,
+   "hex": "00 f6 85 00 9d dd f2 1c 00 18 02 19 67 c0 98 47",
+   "length": 240
+  },
+  {
+   "label": "GCM nonce",
+   "start": 289,
+   "end": 301,
+   "hex": "33 2c ce 98 9d 72 60 e6 1b 04 55 66",
+   "length": 12
+  },
+  {
+   "label": "ciphertext length",
+   "start": 301,
+   "end": 305,
+   "hex": "00 00 01 26",
+   "length": 4
+  },
+  {
+   "label": "AES-GCM ciphertext+tag",
+   "start": 305,
+   "end": 599,
+   "hex": "08 83 c8 ca 44 00 06 9e 36 87 17 67 af 02 d6 94",
+   "length": 294
+  }
+ ],
+ "small_blob_len": 599,
+ "small_armor_head": [
+  "-----BEGIN PGPX MESSAGE-----",
+  "UEdQWAEAAWWpTO8XoQ1uJn6bSc3iHsX69yUFo7zrhAEAVRnQ7hR7C8JBCcdh7rZw+QD2hQCd3fIc",
+  "ABgCGWfAmEdc3bOm8fw9q9rzi9+HX4H9Sn7Z/1W79+h5tWSSWYe86XDC7QZrJfIkOoY3P7gy5g2Z",
+  "sAksQ5yJ8z2mE+i/2EDJPpAFYapp6SHqPnuC0ERHsZub386v6sHkgo1ZIJSTZzYnXSC2sxIxRE8+"
+ ],
+ "pred": {
+  "a": {
+   "case": "one recipient, 4 KB",
+   "pk_sender": 2,
+   "sym": 1,
+   "size_note": "header 23 + 266 + nonce/len 16 + GCM(compress(2+256+4000)) ; ~ 1 recipient entry"
+  },
+  "b": {
+   "case": "five recipients, 4 KB",
+   "pk_sender": 6,
+   "sym": 1,
+   "size_note": "a + 4 x 266 B = a + 1064 B"
+  },
+  "c": {
+   "case": "one recipient, 40 KB (10x)",
+   "pk_sender": 2,
+   "sym": 1,
+   "size_note": "ciphertext grows ~10x (compression ratio permitting), header unchanged"
+  }
+ },
+ "meas": {
+  "a": {
+   "recipients": 1,
+   "msg": 4000,
+   "pk": 2,
+   "sym": 1,
+   "counts": {
+    "pk_sign": 1,
+    "pk_verify": 0,
+    "pk_wrap": 1,
+    "pk_unwrap": 0,
+    "sym_enc": 1,
+    "sym_dec": 0,
+    "hash": 2
+   },
+   "sizes": {
+    "message": 4000,
+    "payload": 4258,
+    "compressed": 1501,
+    "signature": 256,
+    "header": 289,
+    "ciphertext": 1517,
+    "binary": 1822,
+    "armored": 2520
+   },
+   "time_ms": 0.4599349999949709,
+   "recv": {
+    "pk": 6,
+    "sym": 1,
+    "counts": {
+     "pk_sign": 0,
+     "pk_verify": 5,
+     "pk_wrap": 0,
+     "pk_unwrap": 1,
+     "sym_enc": 0,
+     "sym_dec": 1,
+     "hash": 1
+    },
+    "ok": true,
+    "trust": "TRUSTED",
+    "time_ms": 0.7928260000085174
+   }
+  },
+  "b": {
+   "recipients": 5,
+   "msg": 4000,
+   "pk": 6,
+   "sym": 1,
+   "counts": {
+    "pk_sign": 1,
+    "pk_verify": 0,
+    "pk_wrap": 5,
+    "pk_unwrap": 0,
+    "sym_enc": 1,
+    "sym_dec": 0,
+    "hash": 2
+   },
+   "sizes": {
+    "message": 4000,
+    "payload": 4258,
+    "compressed": 1496,
+    "signature": 256,
+    "header": 1353,
+    "ciphertext": 1512,
+    "binary": 2881,
+    "armored": 3951
+   },
+   "time_ms": 0.6088619999928824,
+   "recv": {
+    "pk": 6,
+    "sym": 1,
+    "counts": {
+     "pk_sign": 0,
+     "pk_verify": 5,
+     "pk_wrap": 0,
+     "pk_unwrap": 1,
+     "sym_enc": 0,
+     "sym_dec": 1,
+     "hash": 1
+    },
+    "ok": true,
+    "trust": "TRUSTED",
+    "time_ms": 0.5285850000120718
+   }
+  },
+  "c": {
+   "recipients": 1,
+   "msg": 40000,
+   "pk": 2,
+   "sym": 1,
+   "counts": {
+    "pk_sign": 1,
+    "pk_verify": 0,
+    "pk_wrap": 1,
+    "pk_unwrap": 0,
+    "sym_enc": 1,
+    "sym_dec": 0,
+    "hash": 2
+   },
+   "sizes": {
+    "message": 40000,
+    "payload": 40258,
+    "compressed": 9449,
+    "signature": 256,
+    "header": 289,
+    "ciphertext": 9465,
+    "binary": 9770,
+    "armored": 13256
+   },
+   "time_ms": 2.487458999993919,
+   "recv": {
+    "pk": 6,
+    "sym": 1,
+    "counts": {
+     "pk_sign": 0,
+     "pk_verify": 5,
+     "pk_wrap": 0,
+     "pk_unwrap": 1,
+     "sym_enc": 0,
+     "sym_dec": 1,
+     "hash": 1
+    },
+    "ok": true,
+    "trust": "TRUSTED",
+    "time_ms": 0.7606810000027053
+   }
+  }
+ },
+ "boundary": [
+  {
+   "name": "empty_message",
+   "why": "zero-length input: tests slicing/length fields and compression of an empty body",
+   "protect_code": 0,
+   "code": 0,
+   "out": "OK signer=alice trust=TRUSTED message=b''",
+   "err": ""
+  },
+  {
+   "name": "bitflip_ciphertext",
+   "why": "one-bit change in the last ciphertext byte: the AEAD tag must reject it",
+   "protect_code": 0,
+   "code": 5,
+   "out": "[3] Ks recovered with KR(bob) (RSA-OAEP), id check OK",
+   "err": "ERROR[5]: authentication tag mismatch: ciphertext or header modified"
+  },
+  {
+   "name": "bitflip_wrapped_key",
+   "why": "one bit flipped inside the RSA-OAEP wrapped session key",
+   "protect_code": 0,
+   "code": 4,
+   "out": "[2] parsed header: 1 recipient(s), session-key id 9591a6ac58cec92c, sender keyid 267e9b49cde21ec5",
+   "err": "ERROR[4]: session-key unwrap failed"
+  },
+  {
+   "name": "non_recipient",
+   "why": "Frank is not in the recipient list but holds a valid key: must be refused before any decryption",
+   "protect_code": 0,
+   "code": 3,
+   "out": "[2] parsed header: 1 recipient(s), session-key id bff8f5292e36d286, sender keyid 267e9b49cde21ec5",
+   "err": "ERROR[3]: frank is not in the recipient list (keyid 5ed245ca7daeec0b)"
+  },
+  {
+   "name": "unvalidated_sender",
+   "why": "Gina's key is signed by one marginal introducer only: signature valid but identity not validated",
+   "protect_code": 0,
+   "code": 20,
+   "out": "OK signer=gina trust=UNVALIDATED message=b'scan clinic 856 report scan nurse sample cholesterol 249 sam'",
+   "err": "WARNING: signature is mathematically valid but the signer's key is NOT validated by your web of trust"
+  },
+  {
+   "name": "untrusted_introducer",
+   "why": "Mallory's key is signed only by an untrusted introducer",
+   "protect_code": 0,
+   "code": 20,
+   "out": "OK signer=mallory trust=UNVALIDATED message=b'scan clinic 856 report scan nurse sample cholesterol 249 sam'",
+   "err": "WARNING: signature is mathematically valid but the signer's key is NOT validated by your web of trust"
+  },
+  {
+   "name": "truncated",
+   "why": "message cut in half in transit",
+   "protect_code": 0,
+   "code": 2,
+   "out": "",
+   "err": "ERROR[2]: malformed message (Incorrect padding)"
+  }
+ ],
+ "alice_validity": {
+  "status": "VALID",
+  "full": 1,
+  "marg": 2,
+  "log": [
+   "signature of carol on alice valid, owner-trust=full",
+   "signature of dave on alice valid, owner-trust=marginal",
+   "signature of eve on alice valid, owner-trust=marginal",
+   "signature of frank on alice valid, owner-trust=untrusted"
+  ]
+ },
+ "gina_validity": {
+  "status": "UNKNOWN",
+  "full": 0,
+  "marg": 1,
+  "log": [
+   "signature of dave on gina valid, owner-trust=marginal"
+  ]
+ }
+}

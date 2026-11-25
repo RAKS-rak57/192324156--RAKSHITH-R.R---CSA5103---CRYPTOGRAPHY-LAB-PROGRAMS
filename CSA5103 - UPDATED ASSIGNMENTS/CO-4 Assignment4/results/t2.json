@@ -1,0 +1,294 @@
+{
+ "smime_normal": {
+  "steps": {
+   "sign": {
+    "rc": 0,
+    "err": ""
+   },
+   "encrypt": {
+    "rc": 0,
+    "err": ""
+   },
+   "decrypt": {
+    "rc": 0,
+    "err": ""
+   },
+   "verify": {
+    "rc": 0,
+    "err": "CMS Verification successful"
+   }
+  },
+  "plaintext_ok": true,
+  "validator": {
+   "decision": "ACCEPT",
+   "reason": "all checks passed",
+   "log": [
+    "S1 path built: user1 -> Hospital Issuing CA -> Hospital Root CA",
+    "S2 trust anchor: top of chain is a trusted root",
+    "S3 2 certificate signature(s) verified",
+    "S4 validity period OK for every certificate",
+    "S5 CA flags / pathLenConstraint OK",
+    "S6 leaf KeyUsage=digitalSignature and EKU=emailProtection",
+    "S7 identity: From 'user1@hospital.test' equals certificate SAN",
+    "S8 revocation: not listed on the CRL"
+   ],
+   "pk_verifies": 3
+  },
+  "signer_subject": "CN=user1,O=Hospital Test PKI",
+  "signer_issuer": "CN=Hospital Issuing CA,O=Hospital Test PKI"
+ },
+ "smime_enc_structure": "CMS_ContentInfo: \n  contentType: pkcs7-envelopedData (1.2.840.113549.1.7.3)\n  d.envelopedData: \n    version: 0\n    originatorInfo: <ABSENT>\n    recipientInfos:\n      d.ktri: \n        version: 0\n        d.issuerAndSerialNumber: \n          issuer: O=Hospital Test PKI, CN=Hospital Issuing CA\n          serialNumber: 0x477B89B6DE70065BB3D83FCE5E7F91F7AAE62C5C\n        keyEncryptionAlgorithm: \n          algorithm: rsaEncryption (1.2.840.113549.1.1.1)\n          parameter: NULL\n        encryptedKey: \n          0000 - 73 f6 fe 00 e6 c5 ea ef-d5 fa 63 23 24 96 37   s.........c#$.7\n          000f - fa 59 ca 60 c6 06 59 d6-0b cd bc 9f 8b d9 82   .Y.`..Y........\n          001e - ed 93 81 1e ba ae c0 61-e8 c9 19 4f 85 50 1c   .......a...O.P.\n          002d - 42 09 87 42 8c fa 0f a5-83 87 f3 e3 1f c8 62   B..B..........b\n          003c - f5 f8 2c d8 b1 d1 0f da-11 0f 5f 92 1c af 66   ..,......._...f\n          004b - 1e 1b 81 4e b8 fa 32 f9-52 60 9d e5 d1 6b d9   ...N..2.R`...k.\n          005a - a7 e8 4a ba 95 95 eb 80-ff 0e 08 d0 38 9d 18   ..J.........8..\n          0069 - 51 00 be c6 a8 c3 2d a1-99 e3 22 61 1f bb ff   Q.....-...\"a...\n          0078 - 01 16 89 64 b1 ea 57 06-68 8c e1 08 1b 33 76   ...d..W.h....3v\n          0087 - 19 de ed 33 61 4f c9 97-1a 1a 8b ad e7 06 60   ...3aO........`\n          0096 - 7d f6 3b 21 99 55 0f 41-da c2 c8 e3 1a 34 6a   }.;!.U.A.....4j\n          00a5 - d6 62 a0 f9 e7 1f 35 50-4a 53 29 d9 ff 08 ee   .b....5PJS)....\n          00b4 - b6 06 12 09 87 26 c4 25-8f e4 aa 3a 6b ad 61   .....&.%...:k.a\n          00c3 - ea 62 4a 4a 2f 17 56 2a-71 76 f1 df a8 13 a2   .bJJ/.V*qv.....\n          00d2 - 39 5f 36 84 39 cb d1 f9-3c c3 e9 1e ff d7 4a   9_6.9...<.....J\n",
+ "openssl_verify_chain": "a_signer.pem: OK\nChain:\ndepth=0: O = Hospital Test PKI, CN = user1 (untrusted)\ndepth=1: O = Hospital Test PKI, CN = Hospital Issuing CA (untrusted)\ndepth=2: O = Hospital Test PKI, CN = Hospital Root CA\n",
+ "smime_sizes": {
+  "a_signed.msg": 7800,
+  "a_enc.msg": 11456,
+  "signed_nocerts": 5366,
+  "enc_der": 6926,
+  "leaf_der": 921,
+  "inter_der": 873
+ },
+ "pgp_normal": {
+  "ok": true,
+  "trust": "TRUSTED",
+  "signer": "alice",
+  "lines": [
+   "[1] radix-64 decoded: 1335 B",
+   "[2] parsed header: 1 recipient(s), session-key id d6f7565a5f95761e, sender keyid 267e9b49cde21ec5",
+   "[3] Ks recovered with KR(bob) (RSA-OAEP), id check OK",
+   "[4] AES-GCM tag verified, decrypted 1030 B -> 1014 B",
+   "[5] decompressed 1014 B -> 4256 B ; signature 256 B ; message 3998 B",
+   "[6] signature verified with KU(alice)  -> cryptographically VALID",
+   "    web-of-trust: signature of carol on alice valid, owner-trust=full",
+   "    web-of-trust: signature of dave on alice valid, owner-trust=marginal",
+   "    web-of-trust: signature of eve on alice valid, owner-trust=marginal",
+   "    web-of-trust: signature of frank on alice valid, owner-trust=untrusted",
+   "[7] key validity of alice: VALID (full=1, marginal=2)"
+  ],
+  "sender_ops": {
+   "pk_sign": 1,
+   "pk_verify": 0,
+   "pk_wrap": 1,
+   "pk_unwrap": 0,
+   "sym_enc": 1,
+   "sym_dec": 0,
+   "hash": 2
+  },
+  "recv_ops": {
+   "pk_sign": 0,
+   "pk_verify": 5,
+   "pk_wrap": 0,
+   "pk_unwrap": 1,
+   "sym_enc": 0,
+   "sym_dec": 1,
+   "hash": 1
+  },
+  "sizes": {
+   "message": 3998,
+   "payload": 4256,
+   "compressed": 1014,
+   "signature": 256,
+   "header": 289,
+   "ciphertext": 1030,
+   "binary": 1335,
+   "armored": 1860
+  },
+  "key_overhead": {
+   "public_key_der": 294,
+   "certification_sigs": 4,
+   "certification_bytes": 1024
+  }
+ },
+ "smime_cases": [
+  {
+   "id": "S1",
+   "title": "Expired signer certificate",
+   "predict": "REJECT at the validity-period check (notAfter < now)",
+   "rc": 4,
+   "openssl_error": "40F78554C57F0000:error:17000064:CMS routines:cms_signerinfo_verify_cert:certificate verify error:../crypto/cms/cms_smime.c:289:Verify error: certificate has expired",
+   "openssl_all": "CMS Verification failure\n40F78554C57F0000:error:17000064:CMS routines:cms_signerinfo_verify_cert:certificate verify error:../crypto/cms/cms_smime.c:289:Verify error: certificate has expired",
+   "matched": true,
+   "validator": "REJECT",
+   "validator_reason": "certificate expired or not yet valid",
+   "validator_log": [
+    "S1 path built: userexp -> Hospital Issuing CA -> Hospital Root CA",
+    "S2 trust anchor: top of chain is a trusted root",
+    "S3 2 certificate signature(s) verified",
+    "S4 validity: 'CN=userexp,O=Hospital Test PKI' expired/not yet valid (notAfter 2026-10-13)"
+   ]
+  },
+  {
+   "id": "S2",
+   "title": "Certificate from an untrusted (rogue) CA, claiming user1's address",
+   "predict": "REJECT at path building/trust anchor: issuer not in trusted roots",
+   "rc": 4,
+   "openssl_error": "40470B61487F0000:error:17000064:CMS routines:cms_signerinfo_verify_cert:certificate verify error:../crypto/cms/cms_smime.c:289:Verify error: unable to get local issuer certificate",
+   "openssl_all": "CMS Verification failure\n40470B61487F0000:error:17000064:CMS routines:cms_signerinfo_verify_cert:certificate verify error:../crypto/cms/cms_smime.c:289:Verify error: unable to get local issuer certificate",
+   "matched": true,
+   "validator": "REJECT",
+   "validator_reason": "unable to build path (missing issuer)",
+   "validator_log": [
+    "S1 path building: issuer 'CN=Rogue Root CA,O=Hospital Test PKI' of 'CN=rogue-user1,O=Hospital Test PKI' not found"
+   ]
+  },
+  {
+   "id": "S3",
+   "title": "Sender address differs from certificate subject (From: user2, cert: user1)",
+   "predict": "REJECT at the identity (email) match although chain and signature are valid",
+   "rc": 4,
+   "openssl_error": "409767E5C97F0000:error:17000064:CMS routines:cms_signerinfo_verify_cert:certificate verify error:../crypto/cms/cms_smime.c:289:Verify error: email address mismatch",
+   "openssl_all": "CMS Verification failure\n409767E5C97F0000:error:17000064:CMS routines:cms_signerinfo_verify_cert:certificate verify error:../crypto/cms/cms_smime.c:289:Verify error: email address mismatch",
+   "matched": true,
+   "validator": "REJECT",
+   "validator_reason": "sender address does not match certificate",
+   "validator_log": [
+    "S1 path built: user1 -> Hospital Issuing CA -> Hospital Root CA",
+    "S2 trust anchor: top of chain is a trusted root",
+    "S3 2 certificate signature(s) verified",
+    "S4 validity period OK for every certificate",
+    "S5 CA flags / pathLenConstraint OK",
+    "S6 leaf KeyUsage=digitalSignature and EKU=emailProtection",
+    "S7 identity: From 'user2@hospital.test' not in certificate SAN ['user1@hospital.test']"
+   ]
+  },
+  {
+   "id": "S4",
+   "title": "Revoked certificate (listed on the CRL)",
+   "predict": "REJECT at the revocation check",
+   "rc": 4,
+   "openssl_error": "40F7C6AEE87F0000:error:17000064:CMS routines:cms_signerinfo_verify_cert:certificate verify error:../crypto/cms/cms_smime.c:289:Verify error: certificate revoked",
+   "openssl_all": "CMS Verification failure\n40F7C6AEE87F0000:error:17000064:CMS routines:cms_signerinfo_verify_cert:certificate verify error:../crypto/cms/cms_smime.c:289:Verify error: certificate revoked",
+   "matched": true,
+   "validator": "REJECT",
+   "validator_reason": "certificate revoked",
+   "validator_log": [
+    "S1 path built: userrev -> Hospital Issuing CA -> Hospital Root CA",
+    "S2 trust anchor: top of chain is a trusted root",
+    "S3 2 certificate signature(s) verified",
+    "S4 validity period OK for every certificate",
+    "S5 CA flags / pathLenConstraint OK",
+    "S6 leaf KeyUsage=digitalSignature and EKU=emailProtection",
+    "S7 identity: From 'revoked@hospital.test' equals certificate SAN",
+    "S8 revocation: serial 2cdff7250ac9efcba0f10ea0ef58e180e54e1813 is on the CRL of 'CN=Hospital Issuing CA,O=Hospital Test PKI'"
+   ]
+  },
+  {
+   "id": "S5",
+   "title": "Tampered message body (one character changed after signing)",
+   "predict": "REJECT at the content-digest comparison; chain is fine",
+   "rc": 4,
+   "openssl_error": "40D790F0DA7F0000:error:1700006D:CMS routines:CMS_verify:content verify error:../crypto/cms/cms_smime.c:457:",
+   "openssl_all": "CMS Verification failure\n40D790F0DA7F0000:error:1700009E:CMS routines:CMS_SignerInfo_verify_content:verification failure:../crypto/cms/cms_sd.c:988:\n40D790F0DA7F0000:error:1700006D:CMS routines:CMS_verify:content verify error:../crypto/cms/cms_smime.c:457:",
+   "matched": true,
+   "validator": "ACCEPT",
+   "validator_reason": "all checks passed",
+   "validator_log": [
+    "S1 path built: user1 -> Hospital Issuing CA -> Hospital Root CA",
+    "S2 trust anchor: top of chain is a trusted root",
+    "S3 2 certificate signature(s) verified",
+    "S4 validity period OK for every certificate",
+    "S5 CA flags / pathLenConstraint OK",
+    "S6 leaf KeyUsage=digitalSignature and EKU=emailProtection",
+    "S7 identity: From 'user1@hospital.test' equals certificate SAN",
+    "S8 revocation: not listed on the CRL"
+   ]
+  },
+  {
+   "id": "S6",
+   "title": "Intermediate certificate missing from the message",
+   "predict": "REJECT at path building: cannot find issuer of the leaf",
+   "rc": 4,
+   "openssl_error": "40D7A724D67F0000:error:17000064:CMS routines:cms_signerinfo_verify_cert:certificate verify error:../crypto/cms/cms_smime.c:289:Verify error: unable to get local issuer certificate",
+   "openssl_all": "CMS Verification failure\n40D7A724D67F0000:error:17000064:CMS routines:cms_signerinfo_verify_cert:certificate verify error:../crypto/cms/cms_smime.c:289:Verify error: unable to get local issuer certificate",
+   "matched": true,
+   "validator": "REJECT",
+   "validator_reason": "unable to build path (missing issuer)",
+   "validator_log": [
+    "S1 path building: issuer 'CN=Hospital Issuing CA,O=Hospital Test PKI' of 'CN=user1,O=Hospital Test PKI' not found"
+   ]
+  },
+  {
+   "id": "S7",
+   "title": "Repair of S6: sender re-sends the same message with the intermediate certificate attached",
+   "predict": "ACCEPT - the S6 failure was a missing-chain defect, not a forgery",
+   "rc": 0,
+   "openssl_error": "CMS Verification successful",
+   "openssl_all": "CMS Verification successful",
+   "matched": true,
+   "validator": "ACCEPT",
+   "validator_reason": "all checks passed",
+   "validator_log": [
+    "S1 path built: user1 -> Hospital Issuing CA -> Hospital Root CA",
+    "S2 trust anchor: top of chain is a trusted root",
+    "S3 2 certificate signature(s) verified",
+    "S4 validity period OK for every certificate",
+    "S5 CA flags / pathLenConstraint OK",
+    "S6 leaf KeyUsage=digitalSignature and EKU=emailProtection",
+    "S7 identity: From 'user1@hospital.test' equals certificate SAN",
+    "S8 revocation: not listed on the CRL"
+   ]
+  }
+ ],
+ "pgp_untrusted": {
+  "lines": [
+   "[1] radix-64 decoded: 1330 B",
+   "[2] parsed header: 1 recipient(s), session-key id 49133393c06b0150, sender keyid acdaee9ee6ad4512",
+   "[3] Ks recovered with KR(bob) (RSA-OAEP), id check OK",
+   "[4] AES-GCM tag verified, decrypted 1025 B -> 1009 B",
+   "[5] decompressed 1009 B -> 4256 B ; signature 256 B ; message 3998 B",
+   "[6] signature verified with KU(gina)  -> cryptographically VALID",
+   "    web-of-trust: signature of dave on gina valid, owner-trust=marginal",
+   "[7] key validity of gina: UNKNOWN (full=0, marginal=1)"
+  ],
+  "status": "UNVALIDATED -> warning, exit code 20"
+ },
+ "comparison": {
+  "smime": {
+   "sender_pk": 2,
+   "receiver_pk": 5,
+   "chain_verifies": 3,
+   "msg_bytes_pem": 11456,
+   "msg_bytes_der": 6926,
+   "cert_overhead": 1794
+  },
+  "pgp": {
+   "sender_pk": 2,
+   "receiver_pk": 6,
+   "receiver_message_path": 2,
+   "receiver_key_validation": 4,
+   "msg_bytes": 1860,
+   "msg_bytes_bin": 1335,
+   "key_overhead": 1318
+  }
+ },
+ "scaling": [
+  {
+   "N": 5000,
+   "contacts": 20,
+   "signers": 5,
+   "pgp_valid_fraction": 0.020215
+  },
+  {
+   "N": 5000,
+   "contacts": 50,
+   "signers": 10,
+   "pgp_valid_fraction": 0.09669
+  },
+  {
+   "N": 5000,
+   "contacts": 200,
+   "signers": 10,
+   "pgp_valid_fraction": 0.33581
+  },
+  {
+   "N": 5000,
+   "contacts": 500,
+   "signers": 20,
+   "pgp_valid_fraction": 0.87981
+  }
+ ],
+ "scaling_ca": {
+  "N": 5000,
+  "valid_fraction": 1.0,
+  "trust_decisions_per_verifier": 1
+ }
+}

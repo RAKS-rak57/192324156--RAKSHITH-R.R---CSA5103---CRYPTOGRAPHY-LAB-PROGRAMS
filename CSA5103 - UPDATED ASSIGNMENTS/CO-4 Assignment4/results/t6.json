@@ -1,0 +1,308 @@
+{
+ "t63": {
+  "n": 10,
+  "valid": [
+   "r01@clinic.test",
+   "r02@clinic.test",
+   "r03@clinic.test",
+   "r06@clinic.test",
+   "r08@clinic.test",
+   "r09@clinic.test"
+  ],
+  "valid_key_ids": [
+   "r01@clinic.test#1",
+   "r02@clinic.test#1",
+   "r03@clinic.test#1",
+   "r06@clinic.test#1",
+   "r08@clinic.test#2",
+   "r09@clinic.test#1"
+  ],
+  "skipped": [
+   [
+    "r04@clinic.test",
+    "EXPIRED"
+   ],
+   [
+    "r05@clinic.test",
+    "REVOKED"
+   ],
+   [
+    "r07@clinic.test",
+    "UNTRUSTED"
+   ],
+   [
+    "r10@clinic.test",
+    "MISSING"
+   ]
+  ],
+  "reasons": {
+   "EXPIRED": 1,
+   "REVOKED": 1,
+   "UNTRUSTED": 1,
+   "MISSING": 1
+  },
+  "pk_ops": 6,
+  "sym_ops": 1,
+  "size": 5334,
+  "msg_size": 3700,
+  "time_ms": 1.0948440000220216,
+  "summary_line": "Recipients valid: 6 | skipped: 4 (1 expired, 1 revoked, 1 untrusted, 1 missing)"
+ },
+ "t64": {
+  "rows": [
+   {
+    "recipient": "alice@x.test",
+    "state": "ACTIVE",
+    "expected": "CAN decrypt",
+    "why": "valid, in date, trusted",
+    "actual": "decrypted",
+    "match": true
+   },
+   {
+    "recipient": "bob@x.test",
+    "state": "EXPIRED",
+    "expected": "CANNOT decrypt",
+    "why": "notAfter was 35 days ago",
+    "actual": "refused (no wrapped key for this keyid)",
+    "match": true
+   },
+   {
+    "recipient": "carol@x.test",
+    "state": "REVOKED",
+    "expected": "CANNOT decrypt",
+    "why": "revoked 3 days ago although still inside its validity period",
+    "actual": "refused (no wrapped key for this keyid)",
+    "match": true
+   },
+   {
+    "recipient": "dave@x.test",
+    "state": "ROLLOVER",
+    "expected": "CAN decrypt",
+    "why": "old key expired, NEW key active - must encrypt to the new key, not the old",
+    "actual": "decrypted",
+    "match": true
+   },
+   {
+    "recipient": "erin@x.test",
+    "state": "ACTIVE",
+    "expected": "CAN decrypt",
+    "why": "valid, marginal trust is >= the minimum",
+    "actual": "decrypted",
+    "match": true
+   },
+   {
+    "recipient": "dave@x.test (OLD key)",
+    "state": "EXPIRED key held by dave",
+    "expected": "CANNOT decrypt",
+    "why": "message must not be wrapped for the superseded key",
+    "actual": "refused (no wrapped key for this keyid)",
+    "match": true
+   }
+  ],
+  "pk": 3,
+  "sym": 1,
+  "valid": [
+   "alice@x.test",
+   "dave@x.test",
+   "erin@x.test"
+  ],
+  "skipped": [
+   [
+    "bob@x.test",
+    "EXPIRED"
+   ],
+   [
+    "carol@x.test",
+    "REVOKED"
+   ]
+  ],
+  "size": 857
+ },
+ "t65_noindex": [
+  {
+   "n": 1,
+   "pk": 1,
+   "sym": 1,
+   "size": 4304,
+   "time_ms": 0.05477100000916835,
+   "per_recipient_ms": 0.05477100000916835,
+   "naive_sym_ops": 1,
+   "naive_bytes": 4028,
+   "sym_ms": 0.004392385000073773
+  },
+  {
+   "n": 10,
+   "pk": 10,
+   "sym": 1,
+   "size": 6698,
+   "time_ms": 0.47113900006934273,
+   "per_recipient_ms": 0.04711390000693427,
+   "naive_sym_ops": 10,
+   "naive_bytes": 40280,
+   "sym_ms": 0.0026063949997023883
+  },
+  {
+   "n": 100,
+   "pk": 100,
+   "sym": 1,
+   "size": 30638,
+   "time_ms": 4.957964000027459,
+   "per_recipient_ms": 0.049579640000274594,
+   "naive_sym_ops": 100,
+   "naive_bytes": 402800,
+   "sym_ms": 0.004350080000108392
+  },
+  {
+   "n": 1000,
+   "pk": 1000,
+   "sym": 1,
+   "size": 270038,
+   "time_ms": 84.15230900004644,
+   "per_recipient_ms": 0.08415230900004644,
+   "naive_sym_ops": 1000,
+   "naive_bytes": 4028000,
+   "sym_ms": 0.002451189999987946
+  },
+  {
+   "n": 10000,
+   "pk": 10000,
+   "sym": 1,
+   "size": 2664038,
+   "time_ms": 14079.77310900003,
+   "per_recipient_ms": 1.407977310900003,
+   "naive_sym_ops": 10000,
+   "naive_bytes": 40280000,
+   "sym_ms": 0.002781700000014098
+  }
+ ],
+ "t65_concat": [
+  {
+   "n": 1,
+   "pk": 1,
+   "sym": 1,
+   "size": 4304,
+   "time_ms": 0.07535899999311368,
+   "per_recipient_ms": 0.07535899999311368,
+   "naive_sym_ops": 1,
+   "naive_bytes": 4028,
+   "sym_ms": 0.00263015499967878
+  },
+  {
+   "n": 10,
+   "pk": 10,
+   "sym": 1,
+   "size": 6698,
+   "time_ms": 0.4609410000284697,
+   "per_recipient_ms": 0.04609410000284697,
+   "naive_sym_ops": 10,
+   "naive_bytes": 40280,
+   "sym_ms": 0.0025899250005068097
+  },
+  {
+   "n": 100,
+   "pk": 100,
+   "sym": 1,
+   "size": 30638,
+   "time_ms": 4.540372000064963,
+   "per_recipient_ms": 0.04540372000064963,
+   "naive_sym_ops": 100,
+   "naive_bytes": 402800,
+   "sym_ms": 0.002603830000111884
+  },
+  {
+   "n": 1000,
+   "pk": 1000,
+   "sym": 1,
+   "size": 270038,
+   "time_ms": 48.29001699999935,
+   "per_recipient_ms": 0.04829001699999935,
+   "naive_sym_ops": 1000,
+   "naive_bytes": 4028000,
+   "sym_ms": 0.00272473999984868
+  },
+  {
+   "n": 10000,
+   "pk": 10000,
+   "sym": 1,
+   "size": 2664038,
+   "time_ms": 1654.4667959999515,
+   "per_recipient_ms": 0.16544667959999515,
+   "naive_sym_ops": 10000,
+   "naive_bytes": 40280000,
+   "sym_ms": 0.0027777000002515706
+  }
+ ],
+ "t65": [
+  {
+   "n": 1,
+   "pk": 1,
+   "sym": 1,
+   "size": 4304,
+   "time_ms": 0.05433299998003349,
+   "per_recipient_ms": 0.05433299998003349,
+   "naive_sym_ops": 1,
+   "naive_bytes": 4028,
+   "sym_ms": 0.0027413550003529963
+  },
+  {
+   "n": 10,
+   "pk": 10,
+   "sym": 1,
+   "size": 6698,
+   "time_ms": 0.46525699997346237,
+   "per_recipient_ms": 0.04652569999734624,
+   "naive_sym_ops": 10,
+   "naive_bytes": 40280,
+   "sym_ms": 0.002809874999911699
+  },
+  {
+   "n": 100,
+   "pk": 100,
+   "sym": 1,
+   "size": 30638,
+   "time_ms": 4.637169000034191,
+   "per_recipient_ms": 0.046371690000341914,
+   "naive_sym_ops": 100,
+   "naive_bytes": 402800,
+   "sym_ms": 0.0029303349998599515
+  },
+  {
+   "n": 1000,
+   "pk": 1000,
+   "sym": 1,
+   "size": 270038,
+   "time_ms": 43.26605299991115,
+   "per_recipient_ms": 0.04326605299991115,
+   "naive_sym_ops": 1000,
+   "naive_bytes": 4028000,
+   "sym_ms": 0.0025836150001623537
+  },
+  {
+   "n": 10000,
+   "pk": 10000,
+   "sym": 1,
+   "size": 2664038,
+   "time_ms": 444.4445909999786,
+   "per_recipient_ms": 0.044444459099997856,
+   "naive_sym_ops": 10000,
+   "naive_bytes": 40280000,
+   "sym_ms": 0.0028329899998880137
+  }
+ ],
+ "t65_big": {
+  "n": 100,
+  "msg": 1000000,
+  "size": 1026638,
+  "pk": 100,
+  "sym": 1,
+  "time_ms": 5.877532999988944,
+  "naive_bytes": 100000000
+ },
+ "t66": {
+  "subscribers": 200000,
+  "per_recipient_ms": 0.044444459099997856,
+  "total_s": 8.888891819999571,
+  "header_bytes": 53200000,
+  "measured_bytes_per_recipient": 266.0
+ }
+}

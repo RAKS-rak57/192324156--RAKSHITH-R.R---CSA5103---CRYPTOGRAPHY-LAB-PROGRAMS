@@ -1,0 +1,558 @@
+{
+ "A": {
+  "rows": [
+   {
+    "decision": "ACCEPT",
+    "reason": "NEW",
+    "spi": 2551612739,
+    "seq": 1,
+    "highest": 1,
+    "window": [
+     1
+    ],
+    "icv": "valid",
+    "outer_len": 96,
+    "inner_src": "10.1.0.5",
+    "inner_dst": "10.2.0.9",
+    "payload": "LAB-RESULT-001",
+    "udp_checksum_ok": true
+   },
+   {
+    "decision": "ACCEPT",
+    "reason": "NEW",
+    "spi": 2551612739,
+    "seq": 2,
+    "highest": 2,
+    "window": [
+     2,
+     1
+    ],
+    "icv": "valid",
+    "outer_len": 96,
+    "inner_src": "10.1.0.5",
+    "inner_dst": "10.2.0.9",
+    "payload": "LAB-RESULT-002",
+    "udp_checksum_ok": true
+   },
+   {
+    "decision": "ACCEPT",
+    "reason": "NEW",
+    "spi": 2551612739,
+    "seq": 3,
+    "highest": 3,
+    "window": [
+     3,
+     2,
+     1
+    ],
+    "icv": "valid",
+    "outer_len": 96,
+    "inner_src": "10.1.0.5",
+    "inner_dst": "10.2.0.9",
+    "payload": "LAB-RESULT-003",
+    "udp_checksum_ok": true
+   },
+   {
+    "decision": "ACCEPT",
+    "reason": "NEW",
+    "spi": 2551612739,
+    "seq": 4,
+    "highest": 4,
+    "window": [
+     4,
+     3,
+     2,
+     1
+    ],
+    "icv": "valid",
+    "outer_len": 96,
+    "inner_src": "10.1.0.5",
+    "inner_dst": "10.2.0.9",
+    "payload": "LAB-RESULT-004",
+    "udp_checksum_ok": true
+   },
+   {
+    "decision": "ACCEPT",
+    "reason": "NEW",
+    "spi": 2551612739,
+    "seq": 5,
+    "highest": 5,
+    "window": [
+     5,
+     4,
+     3,
+     2,
+     1
+    ],
+    "icv": "valid",
+    "outer_len": 96,
+    "inner_src": "10.1.0.5",
+    "inner_dst": "10.2.0.9",
+    "payload": "LAB-RESULT-005",
+    "udp_checksum_ok": true
+   },
+   {
+    "decision": "ACCEPT",
+    "reason": "NEW",
+    "spi": 2551612739,
+    "seq": 6,
+    "highest": 6,
+    "window": [
+     6,
+     5,
+     4,
+     3,
+     2,
+     1
+    ],
+    "icv": "valid",
+    "outer_len": 96,
+    "inner_src": "10.1.0.5",
+    "inner_dst": "10.2.0.9",
+    "payload": "LAB-RESULT-006",
+    "udp_checksum_ok": true
+   }
+  ],
+  "spi": "0x98168543",
+  "overhead": 54,
+  "inner_len": 42,
+  "ike_log": [
+   "IKE_SA_INIT+IKE_AUTH: gen=0 DH(X25519) public values exchanged and signed; both signatures verified; keys derived (seed id 4a48414d)"
+  ]
+ },
+ "A_example_hex": "45 00 00 60 00 01 00 00 40 32 8e 35 c0 00 02 01 c6 33 64 01 98 16 85 43 00 00 00 06 00 00 00 00 00 00 00 06 e7 42 f3 6f 7e ac df d4 42 09 a7 fd",
+ "A_fields": {
+  "outer_ip": 20,
+  "esp_spi": 4,
+  "esp_seq": 4,
+  "iv": 8,
+  "inner_len": 42,
+  "pad_and_trailer": 2,
+  "icv": 16
+ },
+ "B": {
+  "W": 32,
+  "state_before": {
+   "highest": 100,
+   "window_size": 32
+  },
+  "rows": [
+   {
+    "tag": "i",
+    "desc": "exact replay of seq 100 (already accepted)",
+    "predicted": "DROP - REPLAY_DUPLICATE",
+    "actual": "DROP - REPLAY_DUPLICATE",
+    "highest": 100,
+    "match": true
+   },
+   {
+    "tag": "ii",
+    "desc": "genuine packet seq 84, delayed by W/2 = 16 positions (never seen before)",
+    "predicted": "ACCEPT - IN_WINDOW_UNSEEN",
+    "actual": "ACCEPT - IN_WINDOW_UNSEEN",
+    "highest": 100,
+    "match": true
+   },
+   {
+    "tag": "ii-b",
+    "desc": "the SAME seq 84 replayed again after acceptance",
+    "predicted": "DROP - REPLAY_DUPLICATE",
+    "actual": "DROP - REPLAY_DUPLICATE",
+    "highest": 100,
+    "match": true
+   },
+   {
+    "tag": "iii",
+    "desc": "genuine packet seq 60, delayed by 40 > W positions",
+    "predicted": "DROP - REPLAY_TOO_OLD (genuine but outside the window)",
+    "actual": "DROP - REPLAY_TOO_OLD",
+    "highest": 100,
+    "match": true
+   },
+   {
+    "tag": "iv",
+    "desc": "captured packet seq 100 re-sent with sequence field changed to 101",
+    "predicted": "DROP - ICV_FAIL (sequence number is covered by the ICV)",
+    "actual": "DROP - ICV_FAIL",
+    "highest": 100,
+    "match": true
+   },
+   {
+    "tag": "iv-b",
+    "desc": "captured packet re-sent with sequence field changed to 70 (inside window, unseen)",
+    "predicted": "DROP - ICV_FAIL (never reaches the window)",
+    "actual": "DROP - ICV_FAIL",
+    "highest": 100,
+    "match": true
+   },
+   {
+    "tag": "edge-in",
+    "desc": "boundary: seq 69 = Highest - W + 1 (oldest slot still inside the window), unseen",
+    "predicted": "ACCEPT - IN_WINDOW_UNSEEN",
+    "actual": "ACCEPT - IN_WINDOW_UNSEEN",
+    "highest": 100,
+    "match": true
+   },
+   {
+    "tag": "edge-out",
+    "desc": "boundary: seq 68 = Highest - W (first slot outside the window)",
+    "predicted": "DROP - REPLAY_TOO_OLD",
+    "actual": "DROP - REPLAY_TOO_OLD",
+    "highest": 100,
+    "match": true
+   }
+  ],
+  "window_after": [
+   100,
+   99,
+   98,
+   97,
+   96,
+   95
+  ]
+ },
+ "W4": [
+  {
+   "order": 1,
+   "seq": 1,
+   "icv": "valid",
+   "decision": "ACCEPT",
+   "reason": "NEW",
+   "highest": 1,
+   "window": [
+    1
+   ]
+  },
+  {
+   "order": 2,
+   "seq": 2,
+   "icv": "valid",
+   "decision": "ACCEPT",
+   "reason": "NEW",
+   "highest": 2,
+   "window": [
+    2,
+    1
+   ]
+  },
+  {
+   "order": 3,
+   "seq": 5,
+   "icv": "valid",
+   "decision": "ACCEPT",
+   "reason": "NEW",
+   "highest": 5,
+   "window": [
+    5,
+    2
+   ]
+  },
+  {
+   "order": 4,
+   "seq": 3,
+   "icv": "valid",
+   "decision": "ACCEPT",
+   "reason": "IN_WINDOW_UNSEEN",
+   "highest": 5,
+   "window": [
+    5,
+    3,
+    2
+   ]
+  },
+  {
+   "order": 5,
+   "seq": 2,
+   "icv": "valid",
+   "decision": "DROP",
+   "reason": "REPLAY_DUPLICATE",
+   "highest": 5,
+   "window": [
+    5,
+    3,
+    2
+   ]
+  },
+  {
+   "order": 6,
+   "seq": 9,
+   "icv": "valid",
+   "decision": "ACCEPT",
+   "reason": "NEW",
+   "highest": 9,
+   "window": [
+    9
+   ]
+  },
+  {
+   "order": 7,
+   "seq": 4,
+   "icv": "valid",
+   "decision": "DROP",
+   "reason": "REPLAY_TOO_OLD",
+   "highest": 9,
+   "window": [
+    9
+   ]
+  },
+  {
+   "order": 8,
+   "seq": 7,
+   "icv": "invalid",
+   "decision": "DROP",
+   "reason": "ICV_FAIL",
+   "highest": 9,
+   "window": [
+    9
+   ]
+  },
+  {
+   "order": 9,
+   "seq": 7,
+   "icv": "valid",
+   "decision": "ACCEPT",
+   "reason": "IN_WINDOW_UNSEEN",
+   "highest": 9,
+   "window": [
+    9,
+    7
+   ]
+  }
+ ],
+ "C": {
+  "rows": [
+   {
+    "case": "modified payload byte",
+    "reason": "ICV_FAIL",
+    "internal_log": {
+     "decision": "DROP",
+     "reason": "ICV_FAIL",
+     "spi": 2270793531,
+     "seq": 2,
+     "highest": 1,
+     "window": [
+      1
+     ],
+     "icv": "invalid"
+    },
+    "external_response": "none (silent discard, no ICMP, no error text)"
+   },
+   {
+    "case": "unknown SPI",
+    "reason": "UNKNOWN_SPI",
+    "internal_log": {
+     "decision": "DROP",
+     "reason": "UNKNOWN_SPI",
+     "spi": 2270793540,
+     "seq": 3,
+     "highest": null,
+     "window": null,
+     "icv": "n/a"
+    },
+    "external_response": "none (silent discard, no ICMP, no error text)"
+   },
+   {
+    "case": "truncated packet",
+    "reason": "MALFORMED",
+    "internal_log": {
+     "decision": "DROP",
+     "reason": "MALFORMED",
+     "spi": null,
+     "seq": 0,
+     "highest": null,
+     "window": null,
+     "icv": "n/a"
+    },
+    "external_response": "none (silent discard, no ICMP, no error text)"
+   }
+  ],
+  "exhausted": "SPI 0x87598f3b: sequence space exhausted at 10; SA must be re-keyed",
+  "rekey_accept": {
+   "decision": "ACCEPT",
+   "reason": "NEW",
+   "spi": 1843103137,
+   "seq": 1,
+   "highest": 1,
+   "window": [
+    1
+   ],
+   "icv": "valid"
+  },
+  "ike_log": "CREATE_CHILD_SA (rekey after exhaustion): gen=4 DH(X25519) public values exchanged and signed; both signatures verified; keys derived (seed id ecc5f0a7)"
+ },
+ "timing": [
+  {
+   "case": "ACCEPT",
+   "median_us": 14.961499999799344,
+   "p90_us": 17.532000015307858
+  },
+  {
+   "case": "REPLAY_DUPLICATE",
+   "median_us": 6.750999972382488,
+   "p90_us": 7.162999963838956
+  },
+  {
+   "case": "REPLAY_TOO_OLD",
+   "median_us": 6.388499997456165,
+   "p90_us": 9.810999983983493
+  },
+  {
+   "case": "ICV_FAIL",
+   "median_us": 21.912499988729905,
+   "p90_us": 28.030999999373307
+  },
+  {
+   "case": "UNKNOWN_SPI",
+   "median_us": 16.88100002184001,
+   "p90_us": 20.809999966786563
+  }
+ ],
+ "D_cover": {
+  "ESP-transport": [
+   [
+    "IP header (original, proto=50)",
+    "no",
+    "no"
+   ],
+   [
+    "ESP header (SPI, Seq)",
+    "no",
+    "yes"
+   ],
+   [
+    "IV",
+    "no",
+    "yes"
+   ],
+   [
+    "Transport payload (UDP/TCP + data)",
+    "yes",
+    "yes"
+   ],
+   [
+    "ESP trailer (pad, pad-len, next-hdr)",
+    "yes",
+    "yes"
+   ],
+   [
+    "ICV",
+    "-",
+    "-"
+   ]
+  ],
+  "ESP-tunnel": [
+   [
+    "New outer IP header",
+    "no",
+    "no"
+   ],
+   [
+    "ESP header (SPI, Seq)",
+    "no",
+    "yes"
+   ],
+   [
+    "IV",
+    "no",
+    "yes"
+   ],
+   [
+    "Original IP header",
+    "yes",
+    "yes"
+   ],
+   [
+    "Original payload",
+    "yes",
+    "yes"
+   ],
+   [
+    "ESP trailer",
+    "yes",
+    "yes"
+   ],
+   [
+    "ICV",
+    "-",
+    "-"
+   ]
+  ],
+  "AH-transport": [
+   [
+    "IP header: immutable fields (src, dst, proto, length)",
+    "no",
+    "yes"
+   ],
+   [
+    "IP header: mutable fields (TTL, TOS, flags, checksum)",
+    "no",
+    "no (zeroed)"
+   ],
+   [
+    "AH header (SPI, Seq, ICV zeroed)",
+    "no",
+    "yes"
+   ],
+   [
+    "Payload",
+    "no",
+    "yes"
+   ]
+  ]
+ },
+ "D_nat": [
+  {
+   "mode": "AH (transport)",
+   "before_nat_icv": true,
+   "after_nat_icv": false,
+   "app_checksum": "not reached",
+   "result": "DROP - ICV fails: source address is an immutable, authenticated field"
+  },
+  {
+   "mode": "ESP (transport)",
+   "before_nat_icv": true,
+   "after_nat_icv": true,
+   "app_checksum": "UDP checksum FAILS",
+   "result": "ICV passes (outer header not covered) but UDP checksum covers the old address and is encrypted, so NAT cannot repair it -> datagram discarded by the host"
+  },
+  {
+   "mode": "ESP (tunnel)",
+   "before_nat_icv": true,
+   "after_nat_icv": true,
+   "app_checksum": "UDP checksum OK",
+   "result": "ACCEPT - outer header is outside the ICV and the inner packet is untouched (real deployments add UDP encapsulation, NAT-T port 4500, so the NAT can track the flow)"
+  }
+ ],
+ "bundle": {
+  "sizes": {
+   "original": 45,
+   "after_AH": 69,
+   "after_ESP": 124
+  },
+  "spi_ah": "0xa4ad2738",
+  "spi_esp": "0xc0b70bcf",
+  "gw_decision": {
+   "decision": "ACCEPT",
+   "reason": "NEW",
+   "spi": 3233221583,
+   "seq": 1,
+   "highest": 1,
+   "window": [
+    1
+   ],
+   "icv": "valid"
+  },
+  "ah_ok": true,
+  "payload": "LAB-RESULT-BUNDLE"
+ },
+ "ike_log_all": [
+  "IKE_SA_INIT+IKE_AUTH: gen=0 DH(X25519) public values exchanged and signed; both signatures verified; keys derived (seed id 4a48414d)",
+  "CREATE_CHILD_SA (lab B): gen=1 DH(X25519) public values exchanged and signed; both signatures verified; keys derived (seed id 83854ac7)",
+  "CREATE_CHILD_SA (W=4 check): gen=2 DH(X25519) public values exchanged and signed; both signatures verified; keys derived (seed id 50f23d77)",
+  "CREATE_CHILD_SA (lab C): gen=3 DH(X25519) public values exchanged and signed; both signatures verified; keys derived (seed id 1e5093f3)",
+  "CREATE_CHILD_SA (rekey after exhaustion): gen=4 DH(X25519) public values exchanged and signed; both signatures verified; keys derived (seed id ecc5f0a7)",
+  "CREATE_CHILD_SA (NAT lab): gen=1005 DH(X25519) public values exchanged and signed; both signatures verified; keys derived (seed id 01b51e6c)",
+  "CREATE_CHILD_SA (SA1 AH host-to-host): gen=1006 DH(X25519) public values exchanged and signed; both signatures verified; keys derived (seed id 25edf056)",
+  "CREATE_CHILD_SA (SA2 ESP gw-gw): gen=1007 DH(X25519) public values exchanged and signed; both signatures verified; keys derived (seed id 28cfe1ad)"
+ ]
+}

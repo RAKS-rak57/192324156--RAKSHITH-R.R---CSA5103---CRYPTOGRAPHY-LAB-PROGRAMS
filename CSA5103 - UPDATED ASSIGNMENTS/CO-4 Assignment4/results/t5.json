@@ -1,0 +1,847 @@
+{
+ "zone": {
+  "hospital.test": "v=spf1 ip4:192.0.2.10 include:_spf.mailer.test -all",
+  "_spf.mailer.test": "v=spf1 ip4:203.0.113.0/26 -all",
+  "lists.example": "v=spf1 ip4:198.51.100.25 -all",
+  "evil.test": "v=spf1 ip4:203.0.113.99 -all",
+  "fwd.example": "v=spf1 ip4:198.51.100.77 -all",
+  "selector1._domainkey.hospital.test": "v=DKIM1; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwu7VzUFr9JKVpv3kJZXcdwM9v0BuhCxXCvnGB24BrQByV2fl2DfTUvI4dFZBulUm0EdnTUZwsPuqJckEk/zHuzAjoR77+F+gf1w9Fs1K3SE04bPC2aP3VIxsNxtBNqNSZp7NbhLPb9CypCj2QRBzudMJQrMHCpwIdT/hnuPwZp+UUHyU8BQqAH1IH0chcOx3dNALz0anqmfQTepekcFY0F0qfxlfZpqPYwJNDm6mjNSRok736MvEQifZh3tkQ7BBjgpyNTVTQcijK/Q45SF5Xl4aDUj91/7eQojOUQ6HXJa2eNTUhr9v4YVdoVHNmUIu3llu8IehxozPe1nKsoUBLwIDAQAB",
+  "selector1._domainkey.evil.test": "v=DKIM1; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyJZrDwNb0Zp9HlJpSOt8OSgJ5YjvzCUIriJQlvFoKvtjqb0bPjjkHiEZCswAH5zWxRXVYM4l7LoN8WViZvSn/fGFDq++TV+llpwJ3/ShEe5XY0RASi+AuprQxRgn+V1WOlF3nxpRatQ8TMHmdGVCcysqToX7V/egC+Ss4m8zs8KVDP8F11s+w3t4Z+l6vNUigSF+flMZTFN3RrVOWkYhXETG4IVgL7F8K7F0RVEtzrn9BQ/WfF0rcDt8CuJ8j0o2DN53J6lqPR+8UFPB7nGJx1/PsafqN5gfMPVUcV58HxVdcUShpV2T0j0FLxjd/J0qu97dF9VZVkoiUrfynKNx3QIDAQAB",
+  "_dmarc.hospital.test": "v=DMARC1; p=reject; adkim=r; aspf=r; rua=mailto:dmarc@hospital.test"
+ },
+ "messages": [
+  {
+   "id": "M1",
+   "title": "Legitimate message from the hospital mail server",
+   "ip": "192.0.2.10",
+   "mail_from": "bounce@hospital.test",
+   "from_domain": "hospital.test",
+   "predicted": {
+    "spf": "pass",
+    "dkim": "pass",
+    "dmarc": "pass",
+    "action": "deliver"
+   },
+   "actual": {
+    "spf": "pass",
+    "dkim": "pass",
+    "dmarc": "pass",
+    "action": "deliver"
+   },
+   "match": true,
+   "spf_evidence": [
+    "SPF record of hospital.test: v=spf1 ip4:192.0.2.10 include:_spf.mailer.test -all",
+    "mechanism ip4:192.0.2.10: 192.0.2.10 inside 192.0.2.10/32",
+    "=> qualifier '+' => pass"
+   ],
+   "dkim_evidence": [
+    "signature: d=hospital.test s=selector1 a=rsa-sha256 c=relaxed/relaxed signed headers=from:to:subject:date",
+    "DNS key found at selector1._domainkey.hospital.test",
+    "body hash: signed ctH4sD+NTYW90f3i... computed ctH4sD+NTYW90f3i... -> match",
+    "RSA signature over the canonicalised signed headers: valid"
+   ],
+   "dmarc_evidence": [
+    "DMARC record: v=DMARC1; p=reject; adkim=r; aspf=r; rua=mailto:dmarc@hospital.test",
+    "SPF: result=pass, envelope domain=hospital.test, visible From=hospital.test, mode=r -> ALIGNED",
+    "DKIM: result=pass, d=hospital.test, visible From=hospital.test, mode=r -> ALIGNED",
+    "DMARC passes if SPF-aligned OR DKIM-aligned: True"
+   ]
+  },
+  {
+   "id": "M2",
+   "title": "Spoofed message: attacker's server claims hospital.test, no DKIM",
+   "ip": "203.0.113.99",
+   "mail_from": "lab@hospital.test",
+   "from_domain": "hospital.test",
+   "predicted": {
+    "spf": "fail",
+    "dkim": "none",
+    "dmarc": "fail",
+    "action": "reject"
+   },
+   "actual": {
+    "spf": "fail",
+    "dkim": "none",
+    "dmarc": "fail",
+    "action": "reject"
+   },
+   "match": true,
+   "spf_evidence": [
+    "SPF record of hospital.test: v=spf1 ip4:192.0.2.10 include:_spf.mailer.test -all",
+    "mechanism ip4:192.0.2.10: 203.0.113.99 outside 192.0.2.10/32",
+    "SPF record of _spf.mailer.test: v=spf1 ip4:203.0.113.0/26 -all",
+    "mechanism ip4:203.0.113.0/26: 203.0.113.99 outside 203.0.113.0/26",
+    "mechanism all: matches everything not matched earlier",
+    "=> qualifier '-' => fail",
+    "mechanism include:_spf.mailer.test: nested result fail",
+    "mechanism all: matches everything not matched earlier",
+    "=> qualifier '-' => fail"
+   ],
+   "dkim_evidence": [
+    "no DKIM-Signature header"
+   ],
+   "dmarc_evidence": [
+    "DMARC record: v=DMARC1; p=reject; adkim=r; aspf=r; rua=mailto:dmarc@hospital.test",
+    "SPF: result=fail, envelope domain=hospital.test, visible From=hospital.test, mode=r -> not aligned/not pass",
+    "DKIM: result=none, d=None, visible From=hospital.test, mode=r -> not aligned/not pass",
+    "DMARC passes if SPF-aligned OR DKIM-aligned: False"
+   ]
+  },
+  {
+   "id": "M3",
+   "title": "Mailing list adds footer and subject tag after DKIM signing",
+   "ip": "198.51.100.25",
+   "mail_from": "owner-list@lists.example",
+   "from_domain": "hospital.test",
+   "predicted": {
+    "spf": "pass",
+    "dkim": "fail",
+    "dmarc": "fail",
+    "action": "reject"
+   },
+   "actual": {
+    "spf": "pass",
+    "dkim": "fail",
+    "dmarc": "fail",
+    "action": "reject"
+   },
+   "match": true,
+   "spf_evidence": [
+    "SPF record of lists.example: v=spf1 ip4:198.51.100.25 -all",
+    "mechanism ip4:198.51.100.25: 198.51.100.25 inside 198.51.100.25/32",
+    "=> qualifier '+' => pass"
+   ],
+   "dkim_evidence": [
+    "signature: d=hospital.test s=selector1 a=rsa-sha256 c=relaxed/relaxed signed headers=from:to:subject:date",
+    "DNS key found at selector1._domainkey.hospital.test",
+    "body hash: signed ctH4sD+NTYW90f3i... computed 33Ut2Sb79RSsf6Bq... -> MISMATCH (body changed after signing)"
+   ],
+   "dmarc_evidence": [
+    "DMARC record: v=DMARC1; p=reject; adkim=r; aspf=r; rua=mailto:dmarc@hospital.test",
+    "SPF: result=pass, envelope domain=lists.example, visible From=hospital.test, mode=r -> not aligned/not pass",
+    "DKIM: result=fail, d=hospital.test, visible From=hospital.test, mode=r -> not aligned/not pass",
+    "DMARC passes if SPF-aligned OR DKIM-aligned: False"
+   ]
+  },
+  {
+   "id": "M3b",
+   "title": "Mailing list that only ADDS an unsigned List-Id header (body and signed headers untouched)",
+   "ip": "198.51.100.25",
+   "mail_from": "owner-list@lists.example",
+   "from_domain": "hospital.test",
+   "predicted": {
+    "spf": "pass",
+    "dkim": "pass",
+    "dmarc": "pass",
+    "action": "deliver"
+   },
+   "actual": {
+    "spf": "pass",
+    "dkim": "pass",
+    "dmarc": "pass",
+    "action": "deliver"
+   },
+   "match": true,
+   "spf_evidence": [
+    "SPF record of lists.example: v=spf1 ip4:198.51.100.25 -all",
+    "mechanism ip4:198.51.100.25: 198.51.100.25 inside 198.51.100.25/32",
+    "=> qualifier '+' => pass"
+   ],
+   "dkim_evidence": [
+    "signature: d=hospital.test s=selector1 a=rsa-sha256 c=relaxed/relaxed signed headers=from:to:subject:date",
+    "DNS key found at selector1._domainkey.hospital.test",
+    "body hash: signed ctH4sD+NTYW90f3i... computed ctH4sD+NTYW90f3i... -> match",
+    "RSA signature over the canonicalised signed headers: valid"
+   ],
+   "dmarc_evidence": [
+    "DMARC record: v=DMARC1; p=reject; adkim=r; aspf=r; rua=mailto:dmarc@hospital.test",
+    "SPF: result=pass, envelope domain=lists.example, visible From=hospital.test, mode=r -> not aligned/not pass",
+    "DKIM: result=pass, d=hospital.test, visible From=hospital.test, mode=r -> ALIGNED",
+    "DMARC passes if SPF-aligned OR DKIM-aligned: True"
+   ]
+  },
+  {
+   "id": "M4",
+   "title": "Attacker passes SPF and DKIM for evil.test but shows From: lab@hospital.test",
+   "ip": "203.0.113.99",
+   "mail_from": "x@evil.test",
+   "from_domain": "hospital.test",
+   "predicted": {
+    "spf": "pass",
+    "dkim": "pass",
+    "dmarc": "fail",
+    "action": "reject"
+   },
+   "actual": {
+    "spf": "pass",
+    "dkim": "pass",
+    "dmarc": "fail",
+    "action": "reject"
+   },
+   "match": true,
+   "spf_evidence": [
+    "SPF record of evil.test: v=spf1 ip4:203.0.113.99 -all",
+    "mechanism ip4:203.0.113.99: 203.0.113.99 inside 203.0.113.99/32",
+    "=> qualifier '+' => pass"
+   ],
+   "dkim_evidence": [
+    "signature: d=evil.test s=selector1 a=rsa-sha256 c=relaxed/relaxed signed headers=from:to:subject:date",
+    "DNS key found at selector1._domainkey.evil.test",
+    "body hash: signed ctH4sD+NTYW90f3i... computed ctH4sD+NTYW90f3i... -> match",
+    "RSA signature over the canonicalised signed headers: valid"
+   ],
+   "dmarc_evidence": [
+    "DMARC record: v=DMARC1; p=reject; adkim=r; aspf=r; rua=mailto:dmarc@hospital.test",
+    "SPF: result=pass, envelope domain=evil.test, visible From=hospital.test, mode=r -> not aligned/not pass",
+    "DKIM: result=pass, d=evil.test, visible From=hospital.test, mode=r -> not aligned/not pass",
+    "DMARC passes if SPF-aligned OR DKIM-aligned: False"
+   ]
+  },
+  {
+   "id": "M5",
+   "title": "Legitimate message forwarded unchanged by fwd.example (envelope sender kept)",
+   "ip": "198.51.100.77",
+   "mail_from": "bounce@hospital.test",
+   "from_domain": "hospital.test",
+   "predicted": {
+    "spf": "fail",
+    "dkim": "pass",
+    "dmarc": "pass",
+    "action": "deliver"
+   },
+   "actual": {
+    "spf": "fail",
+    "dkim": "pass",
+    "dmarc": "pass",
+    "action": "deliver"
+   },
+   "match": true,
+   "spf_evidence": [
+    "SPF record of hospital.test: v=spf1 ip4:192.0.2.10 include:_spf.mailer.test -all",
+    "mechanism ip4:192.0.2.10: 198.51.100.77 outside 192.0.2.10/32",
+    "SPF record of _spf.mailer.test: v=spf1 ip4:203.0.113.0/26 -all",
+    "mechanism ip4:203.0.113.0/26: 198.51.100.77 outside 203.0.113.0/26",
+    "mechanism all: matches everything not matched earlier",
+    "=> qualifier '-' => fail",
+    "mechanism include:_spf.mailer.test: nested result fail",
+    "mechanism all: matches everything not matched earlier",
+    "=> qualifier '-' => fail"
+   ],
+   "dkim_evidence": [
+    "signature: d=hospital.test s=selector1 a=rsa-sha256 c=relaxed/relaxed signed headers=from:to:subject:date",
+    "DNS key found at selector1._domainkey.hospital.test",
+    "body hash: signed ctH4sD+NTYW90f3i... computed ctH4sD+NTYW90f3i... -> match",
+    "RSA signature over the canonicalised signed headers: valid"
+   ],
+   "dmarc_evidence": [
+    "DMARC record: v=DMARC1; p=reject; adkim=r; aspf=r; rua=mailto:dmarc@hospital.test",
+    "SPF: result=fail, envelope domain=hospital.test, visible From=hospital.test, mode=r -> not aligned/not pass",
+    "DKIM: result=pass, d=hospital.test, visible From=hospital.test, mode=r -> ALIGNED",
+    "DMARC passes if SPF-aligned OR DKIM-aligned: True"
+   ]
+  },
+  {
+   "id": "M6",
+   "title": "Newsletter service (authorised via include:) signing with the hospital's delegated key",
+   "ip": "203.0.113.50",
+   "mail_from": "bounce@hospital.test",
+   "from_domain": "hospital.test",
+   "predicted": {
+    "spf": "pass",
+    "dkim": "pass",
+    "dmarc": "pass",
+    "action": "deliver"
+   },
+   "actual": {
+    "spf": "pass",
+    "dkim": "pass",
+    "dmarc": "pass",
+    "action": "deliver"
+   },
+   "match": true,
+   "spf_evidence": [
+    "SPF record of hospital.test: v=spf1 ip4:192.0.2.10 include:_spf.mailer.test -all",
+    "mechanism ip4:192.0.2.10: 203.0.113.50 outside 192.0.2.10/32",
+    "SPF record of _spf.mailer.test: v=spf1 ip4:203.0.113.0/26 -all",
+    "mechanism ip4:203.0.113.0/26: 203.0.113.50 inside 203.0.113.0/26",
+    "=> qualifier '+' => pass",
+    "mechanism include:_spf.mailer.test: nested result pass",
+    "=> qualifier '+' => pass"
+   ],
+   "dkim_evidence": [
+    "signature: d=hospital.test s=selector1 a=rsa-sha256 c=relaxed/relaxed signed headers=from:to:subject:date",
+    "DNS key found at selector1._domainkey.hospital.test",
+    "body hash: signed ctH4sD+NTYW90f3i... computed ctH4sD+NTYW90f3i... -> match",
+    "RSA signature over the canonicalised signed headers: valid"
+   ],
+   "dmarc_evidence": [
+    "DMARC record: v=DMARC1; p=reject; adkim=r; aspf=r; rua=mailto:dmarc@hospital.test",
+    "SPF: result=pass, envelope domain=hospital.test, visible From=hospital.test, mode=r -> ALIGNED",
+    "DKIM: result=pass, d=hospital.test, visible From=hospital.test, mode=r -> ALIGNED",
+    "DMARC passes if SPF-aligned OR DKIM-aligned: True"
+   ]
+  },
+  {
+   "id": "M7",
+   "title": "Content modified in transit by an on-path attacker; sent from the authorised server (SPF aligned)",
+   "ip": "192.0.2.10",
+   "mail_from": "bounce@hospital.test",
+   "from_domain": "hospital.test",
+   "predicted": {
+    "spf": "pass",
+    "dkim": "fail",
+    "dmarc": "pass",
+    "action": "deliver"
+   },
+   "actual": {
+    "spf": "pass",
+    "dkim": "fail",
+    "dmarc": "pass",
+    "action": "deliver"
+   },
+   "match": true,
+   "spf_evidence": [
+    "SPF record of hospital.test: v=spf1 ip4:192.0.2.10 include:_spf.mailer.test -all",
+    "mechanism ip4:192.0.2.10: 192.0.2.10 inside 192.0.2.10/32",
+    "=> qualifier '+' => pass"
+   ],
+   "dkim_evidence": [
+    "signature: d=hospital.test s=selector1 a=rsa-sha256 c=relaxed/relaxed signed headers=from:to:subject:date",
+    "DNS key found at selector1._domainkey.hospital.test",
+    "body hash: signed ctH4sD+NTYW90f3i... computed kcLTtoADqfscUxMe... -> MISMATCH (body changed after signing)"
+   ],
+   "dmarc_evidence": [
+    "DMARC record: v=DMARC1; p=reject; adkim=r; aspf=r; rua=mailto:dmarc@hospital.test",
+    "SPF: result=pass, envelope domain=hospital.test, visible From=hospital.test, mode=r -> ALIGNED",
+    "DKIM: result=fail, d=hospital.test, visible From=hospital.test, mode=r -> not aligned/not pass",
+    "DMARC passes if SPF-aligned OR DKIM-aligned: True"
+   ]
+  }
+ ],
+ "no_include": {
+  "spf": "fail",
+  "dkim": "pass",
+  "dmarc": "pass",
+  "action": "deliver"
+ },
+ "header_analysis": {
+  "raw": [
+   "Return-Path: <bounce@mail-relay.evil.test>",
+   "Received: from mx.clinic.example (mx.clinic.example [198.51.100.2]) by inbox.clinic.example with ESMTPS; Tue, 17 Nov 2026 09:05:12 +0530",
+   "Received: from unknown (HELO mailer.evil.test) ([203.0.113.99]) by mx.clinic.example with SMTP; Tue, 17 Nov 2026 09:05:10 +0530",
+   "Authentication-Results: mx.clinic.example; spf=fail smtp.mailfrom=mail-relay.evil.test; dkim=none; dmarc=fail header.from=hospital.test",
+   "From: \"Central Lab\" <lab@hospital.test>",
+   "To: dr.rao@clinic.example",
+   "Reply-To: <payments@hospital-billing.example>",
+   "Subject: URGENT: verify your password immediately",
+   "Date: Tue, 17 Nov 2026 03:35:01 +0000",
+   "Message-ID: <9f3a@mailer.evil.test>"
+  ],
+  "findings": [
+   [
+    "From (visible identity)",
+    "\"Central Lab\" <lab@hospital.test>",
+    "what the user sees - freely forgeable"
+   ],
+   [
+    "Return-Path (envelope sender)",
+    "<bounce@mail-relay.evil.test>",
+    "domain mail-relay.evil.test differs from From domain hospital.test: SPF was evaluated on THIS domain"
+   ],
+   [
+    "Reply-To",
+    "<payments@hospital-billing.example>",
+    "domain hospital-billing.example differs from From domain: replies go elsewhere"
+   ],
+   [
+    "Message-ID",
+    "<9f3a@mailer.evil.test>",
+    "generated by mailer.evil.test, not by hospital.test"
+   ],
+   [
+    "Date",
+    "Tue, 17 Nov 2026 03:35:01 +0000",
+    "03:35 UTC = 09:05 +0530: consistent with the first Received time (no clock anomaly)"
+   ],
+   [
+    "Authentication-Results",
+    "mx.clinic.example; spf=fail smtp.mailfrom=mail-relay.evil.test; dkim=none; dmarc=fail header.from=hospital.test",
+    "receiving MTA's own verdict: spf=fail, dkim=none, dmarc=fail"
+   ],
+   [
+    "Received #2 (bottom = first hop)",
+    "from unknown (HELO mailer.evil.test) ([203.0.113.99]) by mx.clinic.example with SMTP; Tue, 17 Nov 2026 09:05:10 +0530",
+    "true origin: IP 203.0.113.99 / HELO mailer.evil.test - the delivery path"
+   ],
+   [
+    "Received #1 (top = last hop)",
+    "from mx.clinic.example (mx.clinic.example [198.51.100.2]) by inbox.clinic.example with ESMTPS; Tue, 17 Nov 2026 09:05:12 +0530",
+    "added by our own MX: the only hop we can trust"
+   ]
+  ]
+ },
+ "spam": {
+  "main": {
+   "threshold": 3,
+   "tp": 5,
+   "fp": 1,
+   "fn": 1,
+   "tn": 5,
+   "precision": 0.8333333333333334,
+   "recall": 0.8333333333333334,
+   "rows": [
+    {
+     "id": "H1",
+     "label": "ham",
+     "desc": "Normal lab report from the hospital server",
+     "score": -2,
+     "pred": "ham",
+     "features": {
+      "A4 DMARC pass (reduces score)": -2
+     },
+     "outcome": "TN"
+    },
+    {
+     "id": "H2",
+     "label": "ham",
+     "desc": "Newsletter sent by an authorised third-party service",
+     "score": 0,
+     "pred": "ham",
+     "features": {
+      "F2 Return-Path domain differs from From": 1,
+      "F6 Message-ID domain differs from From": 1,
+      "A4 DMARC pass (reduces score)": -2
+     },
+     "outcome": "TN"
+    },
+    {
+     "id": "H3",
+     "label": "ham",
+     "desc": "Legitimate message relayed by a mailing list that rewrote the body",
+     "score": 7,
+     "pred": "spam",
+     "features": {
+      "F1 Reply-To domain differs from From": 2,
+      "F2 Return-Path domain differs from From": 1,
+      "F6 Message-ID domain differs from From": 1,
+      "A2 DKIM fail": 1,
+      "A3 DMARC fail": 2
+     },
+     "outcome": "FP"
+    },
+    {
+     "id": "H4",
+     "label": "ham",
+     "desc": "Legitimate message forwarded unchanged (SPF breaks, DKIM holds)",
+     "score": 0,
+     "pred": "ham",
+     "features": {
+      "A1 SPF fail": 2,
+      "A4 DMARC pass (reduces score)": -2
+     },
+     "outcome": "TN"
+    },
+    {
+     "id": "H5",
+     "label": "ham",
+     "desc": "Genuine urgent critical-value alert from the lab",
+     "score": 0,
+     "pred": "ham",
+     "features": {
+      "F3 urgency/credential words x2": 2,
+      "A4 DMARC pass (reduces score)": -2
+     },
+     "outcome": "TN"
+    },
+    {
+     "id": "H6",
+     "label": "ham",
+     "desc": "Appointment reminder with a tracking link (display text differs from target)",
+     "score": 1,
+     "pred": "ham",
+     "features": {
+      "F3 urgency/credential words x1": 1,
+      "F4 link text/IP differs from target": 2,
+      "A4 DMARC pass (reduces score)": -2
+     },
+     "outcome": "TN"
+    },
+    {
+     "id": "S1",
+     "label": "spam",
+     "desc": "Classic credential phish: spoofed From, IP-address link",
+     "score": 12,
+     "pred": "spam",
+     "features": {
+      "F2 Return-Path domain differs from From": 1,
+      "F3 urgency/credential words x6": 3,
+      "F4 link text/IP differs from target": 2,
+      "F6 Message-ID domain differs from From": 1,
+      "A1 SPF fail": 2,
+      "A2 DKIM none": 1,
+      "A3 DMARC fail": 2
+     },
+     "outcome": "TP"
+    },
+    {
+     "id": "S2",
+     "label": "spam",
+     "desc": "Business e-mail compromise: spoofed CFO asks for a wire",
+     "score": 10,
+     "pred": "spam",
+     "features": {
+      "F1 Reply-To domain differs from From": 2,
+      "F2 Return-Path domain differs from From": 1,
+      "F3 urgency/credential words x1": 1,
+      "F6 Message-ID domain differs from From": 1,
+      "A1 SPF fail": 2,
+      "A2 DKIM none": 1,
+      "A3 DMARC fail": 2
+     },
+     "outcome": "TP"
+    },
+    {
+     "id": "S3",
+     "label": "spam",
+     "desc": "Look-alike domain (hospita1.test) with its own valid SPF/DKIM/DMARC",
+     "score": 3,
+     "pred": "spam",
+     "features": {
+      "F3 urgency/credential words x5": 3,
+      "F4 link text/IP differs from target": 2,
+      "A4 DMARC pass (reduces score)": -2
+     },
+     "outcome": "TP"
+    },
+    {
+     "id": "S4",
+     "label": "spam",
+     "desc": "Phish sent from a COMPROMISED genuine hospital mailbox (all authentication passes)",
+     "score": -2,
+     "pred": "ham",
+     "features": {
+      "A4 DMARC pass (reduces score)": -2
+     },
+     "outcome": "FN"
+    },
+    {
+     "id": "S5",
+     "label": "spam",
+     "desc": "Bulk advert: capitals, urgency, softfail",
+     "score": 8,
+     "pred": "spam",
+     "features": {
+      "F3 urgency/credential words x3": 3,
+      "F5 subject mostly capitals": 1,
+      "F6 Message-ID domain differs from From": 1,
+      "F7 Date missing/implausible": 1,
+      "A1 SPF softfail": 1,
+      "A2 DKIM none": 1
+     },
+     "outcome": "TP"
+    },
+    {
+     "id": "S6",
+     "label": "spam",
+     "desc": "Gift-card scam, forged From, mismatching Message-ID",
+     "score": 11,
+     "pred": "spam",
+     "features": {
+      "F1 Reply-To domain differs from From": 2,
+      "F2 Return-Path domain differs from From": 1,
+      "F3 urgency/credential words x2": 2,
+      "F6 Message-ID domain differs from From": 1,
+      "A1 SPF fail": 2,
+      "A2 DKIM none": 1,
+      "A3 DMARC fail": 2
+     },
+     "outcome": "TP"
+    }
+   ]
+  },
+  "sweep": [
+   {
+    "threshold": 2,
+    "tp": 5,
+    "fp": 1,
+    "fn": 1,
+    "tn": 5,
+    "precision": 0.8333333333333334,
+    "recall": 0.8333333333333334
+   },
+   {
+    "threshold": 3,
+    "tp": 5,
+    "fp": 1,
+    "fn": 1,
+    "tn": 5,
+    "precision": 0.8333333333333334,
+    "recall": 0.8333333333333334
+   },
+   {
+    "threshold": 4,
+    "tp": 4,
+    "fp": 1,
+    "fn": 2,
+    "tn": 5,
+    "precision": 0.8,
+    "recall": 0.6666666666666666
+   },
+   {
+    "threshold": 5,
+    "tp": 4,
+    "fp": 1,
+    "fn": 2,
+    "tn": 5,
+    "precision": 0.8,
+    "recall": 0.6666666666666666
+   },
+   {
+    "threshold": 6,
+    "tp": 4,
+    "fp": 1,
+    "fn": 2,
+    "tn": 5,
+    "precision": 0.8,
+    "recall": 0.6666666666666666
+   },
+   {
+    "threshold": 7,
+    "tp": 4,
+    "fp": 1,
+    "fn": 2,
+    "tn": 5,
+    "precision": 0.8,
+    "recall": 0.6666666666666666
+   },
+   {
+    "threshold": 8,
+    "tp": 4,
+    "fp": 0,
+    "fn": 2,
+    "tn": 6,
+    "precision": 1.0,
+    "recall": 0.6666666666666666
+   }
+  ],
+  "content_only": {
+   "threshold": 3,
+   "tp": 5,
+   "fp": 2,
+   "fn": 1,
+   "tn": 4,
+   "precision": 0.7142857142857143,
+   "recall": 0.8333333333333334,
+   "rows": [
+    {
+     "id": "H1",
+     "label": "ham",
+     "desc": "Normal lab report from the hospital server",
+     "score": 0,
+     "pred": "ham",
+     "features": {},
+     "outcome": "TN"
+    },
+    {
+     "id": "H2",
+     "label": "ham",
+     "desc": "Newsletter sent by an authorised third-party service",
+     "score": 2,
+     "pred": "ham",
+     "features": {
+      "F2 Return-Path domain differs from From": 1,
+      "F6 Message-ID domain differs from From": 1
+     },
+     "outcome": "TN"
+    },
+    {
+     "id": "H3",
+     "label": "ham",
+     "desc": "Legitimate message relayed by a mailing list that rewrote the body",
+     "score": 4,
+     "pred": "spam",
+     "features": {
+      "F1 Reply-To domain differs from From": 2,
+      "F2 Return-Path domain differs from From": 1,
+      "F6 Message-ID domain differs from From": 1
+     },
+     "outcome": "FP"
+    },
+    {
+     "id": "H4",
+     "label": "ham",
+     "desc": "Legitimate message forwarded unchanged (SPF breaks, DKIM holds)",
+     "score": 0,
+     "pred": "ham",
+     "features": {},
+     "outcome": "TN"
+    },
+    {
+     "id": "H5",
+     "label": "ham",
+     "desc": "Genuine urgent critical-value alert from the lab",
+     "score": 2,
+     "pred": "ham",
+     "features": {
+      "F3 urgency/credential words x2": 2
+     },
+     "outcome": "TN"
+    },
+    {
+     "id": "H6",
+     "label": "ham",
+     "desc": "Appointment reminder with a tracking link (display text differs from target)",
+     "score": 3,
+     "pred": "spam",
+     "features": {
+      "F3 urgency/credential words x1": 1,
+      "F4 link text/IP differs from target": 2
+     },
+     "outcome": "FP"
+    },
+    {
+     "id": "S1",
+     "label": "spam",
+     "desc": "Classic credential phish: spoofed From, IP-address link",
+     "score": 7,
+     "pred": "spam",
+     "features": {
+      "F2 Return-Path domain differs from From": 1,
+      "F3 urgency/credential words x6": 3,
+      "F4 link text/IP differs from target": 2,
+      "F6 Message-ID domain differs from From": 1
+     },
+     "outcome": "TP"
+    },
+    {
+     "id": "S2",
+     "label": "spam",
+     "desc": "Business e-mail compromise: spoofed CFO asks for a wire",
+     "score": 5,
+     "pred": "spam",
+     "features": {
+      "F1 Reply-To domain differs from From": 2,
+      "F2 Return-Path domain differs from From": 1,
+      "F3 urgency/credential words x1": 1,
+      "F6 Message-ID domain differs from From": 1
+     },
+     "outcome": "TP"
+    },
+    {
+     "id": "S3",
+     "label": "spam",
+     "desc": "Look-alike domain (hospita1.test) with its own valid SPF/DKIM/DMARC",
+     "score": 5,
+     "pred": "spam",
+     "features": {
+      "F3 urgency/credential words x5": 3,
+      "F4 link text/IP differs from target": 2
+     },
+     "outcome": "TP"
+    },
+    {
+     "id": "S4",
+     "label": "spam",
+     "desc": "Phish sent from a COMPROMISED genuine hospital mailbox (all authentication passes)",
+     "score": 0,
+     "pred": "ham",
+     "features": {},
+     "outcome": "FN"
+    },
+    {
+     "id": "S5",
+     "label": "spam",
+     "desc": "Bulk advert: capitals, urgency, softfail",
+     "score": 6,
+     "pred": "spam",
+     "features": {
+      "F3 urgency/credential words x3": 3,
+      "F5 subject mostly capitals": 1,
+      "F6 Message-ID domain differs from From": 1,
+      "F7 Date missing/implausible": 1
+     },
+     "outcome": "TP"
+    },
+    {
+     "id": "S6",
+     "label": "spam",
+     "desc": "Gift-card scam, forged From, mismatching Message-ID",
+     "score": 6,
+     "pred": "spam",
+     "features": {
+      "F1 Reply-To domain differs from From": 2,
+      "F2 Return-Path domain differs from From": 1,
+      "F3 urgency/credential words x2": 2,
+      "F6 Message-ID domain differs from From": 1
+     },
+     "outcome": "TP"
+    }
+   ]
+  },
+  "content_only_sweep": [
+   {
+    "threshold": 2,
+    "tp": 5,
+    "fp": 4,
+    "fn": 1,
+    "tn": 2,
+    "precision": 0.5555555555555556,
+    "recall": 0.8333333333333334
+   },
+   {
+    "threshold": 3,
+    "tp": 5,
+    "fp": 2,
+    "fn": 1,
+    "tn": 4,
+    "precision": 0.7142857142857143,
+    "recall": 0.8333333333333334
+   },
+   {
+    "threshold": 4,
+    "tp": 5,
+    "fp": 1,
+    "fn": 1,
+    "tn": 5,
+    "precision": 0.8333333333333334,
+    "recall": 0.8333333333333334
+   },
+   {
+    "threshold": 5,
+    "tp": 5,
+    "fp": 0,
+    "fn": 1,
+    "tn": 6,
+    "precision": 1.0,
+    "recall": 0.8333333333333334
+   },
+   {
+    "threshold": 6,
+    "tp": 3,
+    "fp": 0,
+    "fn": 3,
+    "tn": 6,
+    "precision": 1.0,
+    "recall": 0.5
+   },
+   {
+    "threshold": 7,
+    "tp": 1,
+    "fp": 0,
+    "fn": 5,
+    "tn": 6,
+    "precision": 1.0,
+    "recall": 0.16666666666666666
+   },
+   {
+    "threshold": 8,
+    "tp": 0,
+    "fp": 0,
+    "fn": 6,
+    "tn": 6,
+    "precision": 0,
+    "recall": 0.0
+   }
+  ]
+ }
+}
